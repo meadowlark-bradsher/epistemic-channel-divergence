@@ -1,0 +1,1496 @@
+{
+  "config": {
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "questions_file": "mc_questions.json",
+    "n_samples": 30,
+    "temperature": 1.0,
+    "constraints": [
+      "(5,80)",
+      "(10,70)",
+      "(15,60)",
+      "(20,55)"
+    ],
+    "timestamp": "2026-01-19T14:46:51.509477"
+  },
+  "summary": {
+    "(5,80)": {
+      "mean_js": 0.3810161878041433,
+      "mean_boundary_mass": 0.17875000000000002,
+      "piling_rate": 0.125,
+      "mean_options_at_min": 0.775,
+      "n_questions": 40
+    },
+    "(10,70)": {
+      "mean_js": 0.3589193971065392,
+      "mean_boundary_mass": 0.3325,
+      "piling_rate": 0.275,
+      "mean_options_at_min": 1.225,
+      "n_questions": 40
+    },
+    "(15,60)": {
+      "mean_js": 0.36576669845903254,
+      "mean_boundary_mass": 0.32249999999999995,
+      "piling_rate": 0.025,
+      "mean_options_at_min": 0.95,
+      "n_questions": 40
+    },
+    "(20,55)": {
+      "mean_js": 0.3655049726711149,
+      "mean_boundary_mass": 0.42750000000000005,
+      "piling_rate": 0.1,
+      "mean_options_at_min": 1.45,
+      "n_questions": 40
+    }
+  },
+  "by_constraint": {
+    "(5,80)": [
+      {
+        "question_id": 0,
+        "js": 0.1518231804254187,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9709505944546686
+      },
+      {
+        "question_id": 1,
+        "js": 0.46394407073602495,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.903701696057348
+      },
+      {
+        "question_id": 2,
+        "js": 0.4566795548924871,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9527241956246546
+      },
+      {
+        "question_id": 3,
+        "js": 0.3148263366843712,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.903701696057348
+      },
+      {
+        "question_id": 4,
+        "js": 0.48752641897167354,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.8709505944546685
+      },
+      {
+        "question_id": 5,
+        "js": 0.30766872099900255,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.8464393446710154
+      },
+      {
+        "question_id": 6,
+        "js": 0.4412369733774047,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9261207468426806
+      },
+      {
+        "question_id": 7,
+        "js": 0.48306807166379684,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9709505944546686
+      },
+      {
+        "question_id": 8,
+        "js": 0.5916115552221977,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9588718484453602
+      },
+      {
+        "question_id": 9,
+        "js": 0.4910005650015675,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.8464393446710154
+      },
+      {
+        "question_id": 10,
+        "js": 0.21543902835970075,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9261207468426806
+      },
+      {
+        "question_id": 11,
+        "js": 0.21156345450472197,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.8709505944546685
+      },
+      {
+        "question_id": 12,
+        "js": 0.4039213026207358,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.903701696057348
+      },
+      {
+        "question_id": 13,
+        "js": 0.2355113827376374,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.7427376486136672
+      },
+      {
+        "question_id": 14,
+        "js": 0.354653415273967,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9854752972273344
+      },
+      {
+        "question_id": 15,
+        "js": 0.3047096342542856,
+        "boundary_mass": 0.9,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 1,
+        "report_entropy": 1.0219280948873624
+      },
+      {
+        "question_id": 16,
+        "js": 0.42032628208743794,
+        "boundary_mass": 0.9,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 1,
+        "report_entropy": 1.0219280948873624
+      },
+      {
+        "question_id": 17,
+        "js": 0.6867789910669114,
+        "boundary_mass": 0.15000000000000002,
+        "is_piling": true,
+        "options_at_min": 3,
+        "options_at_max": 0,
+        "report_entropy": 0.847584679824574
+      },
+      {
+        "question_id": 18,
+        "js": 0.6938560538759583,
+        "boundary_mass": 0.15000000000000002,
+        "is_piling": true,
+        "options_at_min": 3,
+        "options_at_max": 0,
+        "report_entropy": 0.847584679824574
+      },
+      {
+        "question_id": 19,
+        "js": 0.27009724798538604,
+        "boundary_mass": 0.9,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 1,
+        "report_entropy": 1.0219280948873624
+      },
+      {
+        "question_id": 20,
+        "js": 0.02708683745747497,
+        "boundary_mass": 0.15000000000000002,
+        "is_piling": true,
+        "options_at_min": 3,
+        "options_at_max": 0,
+        "report_entropy": 0.847584679824574
+      },
+      {
+        "question_id": 21,
+        "js": 0.49548357910641877,
+        "boundary_mass": 0.05,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 0,
+        "report_entropy": 1.1917601481809734
+      },
+      {
+        "question_id": 22,
+        "js": 0.2776467094616435,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.3567796494470397
+      },
+      {
+        "question_id": 23,
+        "js": 0.09780498209453937,
+        "boundary_mass": 0.15000000000000002,
+        "is_piling": true,
+        "options_at_min": 3,
+        "options_at_max": 0,
+        "report_entropy": 0.847584679824574
+      },
+      {
+        "question_id": 24,
+        "js": 0.6104087383986109,
+        "boundary_mass": 0.15000000000000002,
+        "is_piling": true,
+        "options_at_min": 3,
+        "options_at_max": 0,
+        "report_entropy": 0.847584679824574
+      },
+      {
+        "question_id": 25,
+        "js": 0.13246357005403156,
+        "boundary_mass": 0.9,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 1,
+        "report_entropy": 1.0219280948873624
+      },
+      {
+        "question_id": 26,
+        "js": 0.5430628927263443,
+        "boundary_mass": 0.9,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 1,
+        "report_entropy": 1.0219280948873624
+      },
+      {
+        "question_id": 27,
+        "js": 0.5598124872493355,
+        "boundary_mass": 0.05,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 0,
+        "report_entropy": 1.4166422780956525
+      },
+      {
+        "question_id": 28,
+        "js": 0.03517497144110002,
+        "boundary_mass": 0.9,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 1,
+        "report_entropy": 1.0219280948873624
+      },
+      {
+        "question_id": 29,
+        "js": 0.07279826324135288,
+        "boundary_mass": 0.9,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 1,
+        "report_entropy": 1.0219280948873624
+      },
+      {
+        "question_id": 30,
+        "js": 0.4846000402538513,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9709505944546686
+      },
+      {
+        "question_id": 31,
+        "js": 0.34518466385695823,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9854752972273344
+      },
+      {
+        "question_id": 32,
+        "js": 0.3981570565658695,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.58481870497303
+      },
+      {
+        "question_id": 33,
+        "js": 0.4933765713264993,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.8954618442383218
+      },
+      {
+        "question_id": 34,
+        "js": 0.6056015393694149,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9709505944546686
+      },
+      {
+        "question_id": 35,
+        "js": 0.2931772272814539,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.3567796494470397
+      },
+      {
+        "question_id": 36,
+        "js": 0.4744482727034584,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9709505944546686
+      },
+      {
+        "question_id": 37,
+        "js": 0.5485448278398416,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 2.0
+      },
+      {
+        "question_id": 38,
+        "js": 0.5966848061270997,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9709505944546686
+      },
+      {
+        "question_id": 39,
+        "js": 0.1628872348697466,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 2.0
+      }
+    ],
+    "(10,70)": [
+      {
+        "question_id": 0,
+        "js": 0.20289043364827442,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9709505944546686
+      },
+      {
+        "question_id": 1,
+        "js": 0.5007900636030969,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.903701696057348
+      },
+      {
+        "question_id": 2,
+        "js": 0.4566795548924871,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9527241956246546
+      },
+      {
+        "question_id": 3,
+        "js": 0.2951936964126661,
+        "boundary_mass": 0.1,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 0,
+        "report_entropy": 1.7609640474436812
+      },
+      {
+        "question_id": 4,
+        "js": 0.48752641897167354,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.8709505944546685
+      },
+      {
+        "question_id": 5,
+        "js": 0.31720371870696273,
+        "boundary_mass": 0.1,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 0,
+        "report_entropy": 1.7609640474436812
+      },
+      {
+        "question_id": 6,
+        "js": 0.39436736042225495,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.8709505944546685
+      },
+      {
+        "question_id": 7,
+        "js": 0.48306807166379684,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9709505944546686
+      },
+      {
+        "question_id": 8,
+        "js": 0.591990838975043,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9219280948873623
+      },
+      {
+        "question_id": 9,
+        "js": 0.4909780750142444,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9709505944546686
+      },
+      {
+        "question_id": 10,
+        "js": 0.2503798579957209,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9709505944546686
+      },
+      {
+        "question_id": 11,
+        "js": 0.17842044619112252,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9709505944546686
+      },
+      {
+        "question_id": 12,
+        "js": 0.3993315670657537,
+        "boundary_mass": 0.1,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 0,
+        "report_entropy": 1.8464393446710154
+      },
+      {
+        "question_id": 13,
+        "js": 0.23315237670581207,
+        "boundary_mass": 0.2,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 0,
+        "report_entropy": 1.6854752972273344
+      },
+      {
+        "question_id": 14,
+        "js": 0.3284680403755367,
+        "boundary_mass": 0.1,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 0,
+        "report_entropy": 1.8464393446710154
+      },
+      {
+        "question_id": 15,
+        "js": 0.2576446761420297,
+        "boundary_mass": 1.0,
+        "is_piling": true,
+        "options_at_min": 3,
+        "options_at_max": 1,
+        "report_entropy": 1.3567796494470397
+      },
+      {
+        "question_id": 16,
+        "js": 0.34246820245612486,
+        "boundary_mass": 1.0,
+        "is_piling": true,
+        "options_at_min": 3,
+        "options_at_max": 1,
+        "report_entropy": 1.3567796494470397
+      },
+      {
+        "question_id": 17,
+        "js": 0.5629304637952666,
+        "boundary_mass": 1.0,
+        "is_piling": true,
+        "options_at_min": 3,
+        "options_at_max": 1,
+        "report_entropy": 1.3567796494470397
+      },
+      {
+        "question_id": 18,
+        "js": 0.5364772063897514,
+        "boundary_mass": 1.0,
+        "is_piling": true,
+        "options_at_min": 3,
+        "options_at_max": 1,
+        "report_entropy": 1.3567796494470397
+      },
+      {
+        "question_id": 19,
+        "js": 0.23312684263569242,
+        "boundary_mass": 1.0,
+        "is_piling": true,
+        "options_at_min": 3,
+        "options_at_max": 1,
+        "report_entropy": 1.3567796494470397
+      },
+      {
+        "question_id": 20,
+        "js": 0.08980852599549541,
+        "boundary_mass": 1.0,
+        "is_piling": true,
+        "options_at_min": 3,
+        "options_at_max": 1,
+        "report_entropy": 1.3567796494470397
+      },
+      {
+        "question_id": 21,
+        "js": 0.4211336005546258,
+        "boundary_mass": 1.0,
+        "is_piling": true,
+        "options_at_min": 3,
+        "options_at_max": 1,
+        "report_entropy": 1.3567796494470397
+      },
+      {
+        "question_id": 22,
+        "js": 0.284424732270274,
+        "boundary_mass": 0.2,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 0,
+        "report_entropy": 1.5709505944546687
+      },
+      {
+        "question_id": 23,
+        "js": 0.05680048736752203,
+        "boundary_mass": 1.0,
+        "is_piling": true,
+        "options_at_min": 3,
+        "options_at_max": 1,
+        "report_entropy": 1.3567796494470397
+      },
+      {
+        "question_id": 24,
+        "js": 0.47007821841016834,
+        "boundary_mass": 1.0,
+        "is_piling": true,
+        "options_at_min": 3,
+        "options_at_max": 1,
+        "report_entropy": 1.3567796494470397
+      },
+      {
+        "question_id": 25,
+        "js": 0.09502093901927747,
+        "boundary_mass": 1.0,
+        "is_piling": true,
+        "options_at_min": 3,
+        "options_at_max": 1,
+        "report_entropy": 1.3567796494470397
+      },
+      {
+        "question_id": 26,
+        "js": 0.407203334587416,
+        "boundary_mass": 0.7999999999999999,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 1,
+        "report_entropy": 1.319035274338866
+      },
+      {
+        "question_id": 27,
+        "js": 0.4444772943609544,
+        "boundary_mass": 0.2,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 0,
+        "report_entropy": 1.6854752972273344
+      },
+      {
+        "question_id": 28,
+        "js": 0.06671346440643611,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 0.847584679824574
+      },
+      {
+        "question_id": 29,
+        "js": 0.05557774592030597,
+        "boundary_mass": 1.0,
+        "is_piling": true,
+        "options_at_min": 3,
+        "options_at_max": 1,
+        "report_entropy": 1.3567796494470397
+      },
+      {
+        "question_id": 30,
+        "js": 0.4846386857977546,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9261207468426806
+      },
+      {
+        "question_id": 31,
+        "js": 0.4323947428981453,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9261207468426806
+      },
+      {
+        "question_id": 32,
+        "js": 0.4163292166829597,
+        "boundary_mass": 0.1,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 0,
+        "report_entropy": 1.8954618442383218
+      },
+      {
+        "question_id": 33,
+        "js": 0.3957700779409173,
+        "boundary_mass": 0.2,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 0,
+        "report_entropy": 1.721928094887362
+      },
+      {
+        "question_id": 34,
+        "js": 0.6056015393694149,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9709505944546686
+      },
+      {
+        "question_id": 35,
+        "js": 0.232624523535535,
+        "boundary_mass": 0.2,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 0,
+        "report_entropy": 1.5709505944546687
+      },
+      {
+        "question_id": 36,
+        "js": 0.4744482727034584,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9709505944546686
+      },
+      {
+        "question_id": 37,
+        "js": 0.6097327608860095,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9709505944546686
+      },
+      {
+        "question_id": 38,
+        "js": 0.5968583540219401,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9854752972273344
+      },
+      {
+        "question_id": 39,
+        "js": 0.1740514554696467,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9709505944546686
+      }
+    ],
+    "(15,60)": [
+      {
+        "question_id": 0,
+        "js": 0.08942956242787262,
+        "boundary_mass": 0.3,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 0,
+        "report_entropy": 1.8709505944546685
+      },
+      {
+        "question_id": 1,
+        "js": 0.5007900636030969,
+        "boundary_mass": 0.15,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 0,
+        "report_entropy": 1.903701696057348
+      },
+      {
+        "question_id": 2,
+        "js": 0.4566795548924871,
+        "boundary_mass": 0.15,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 0,
+        "report_entropy": 1.9527241956246546
+      },
+      {
+        "question_id": 3,
+        "js": 0.37650352505199347,
+        "boundary_mass": 0.15,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 0,
+        "report_entropy": 1.903701696057348
+      },
+      {
+        "question_id": 4,
+        "js": 0.4873722933273932,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.8464393446710154
+      },
+      {
+        "question_id": 5,
+        "js": 0.3212245957733558,
+        "boundary_mass": 0.15,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 0,
+        "report_entropy": 1.9261207468426806
+      },
+      {
+        "question_id": 6,
+        "js": 0.49194162384884244,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9709505944546686
+      },
+      {
+        "question_id": 7,
+        "js": 0.35687778128596803,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.8464393446710154
+      },
+      {
+        "question_id": 8,
+        "js": 0.6602093955570069,
+        "boundary_mass": 0.15,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 0,
+        "report_entropy": 1.903701696057348
+      },
+      {
+        "question_id": 9,
+        "js": 0.4909089646453237,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9854752972273344
+      },
+      {
+        "question_id": 10,
+        "js": 0.2747815583048274,
+        "boundary_mass": 0.15,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 0,
+        "report_entropy": 1.9261207468426806
+      },
+      {
+        "question_id": 11,
+        "js": 0.22189672564353607,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9709505944546686
+      },
+      {
+        "question_id": 12,
+        "js": 0.4039213026207358,
+        "boundary_mass": 0.15,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 0,
+        "report_entropy": 1.903701696057348
+      },
+      {
+        "question_id": 13,
+        "js": 0.3178079984470027,
+        "boundary_mass": 0.15,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 0,
+        "report_entropy": 1.903701696057348
+      },
+      {
+        "question_id": 14,
+        "js": 0.3753702460680257,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9854752972273344
+      },
+      {
+        "question_id": 15,
+        "js": 0.23192311023644246,
+        "boundary_mass": 0.8999999999999999,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 1,
+        "report_entropy": 1.5954618442383217
+      },
+      {
+        "question_id": 16,
+        "js": 0.28806885648506075,
+        "boundary_mass": 0.8999999999999999,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 1,
+        "report_entropy": 1.5954618442383217
+      },
+      {
+        "question_id": 17,
+        "js": 0.5433514175204175,
+        "boundary_mass": 0.8999999999999999,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 1,
+        "report_entropy": 1.5954618442383217
+      },
+      {
+        "question_id": 18,
+        "js": 0.486962039488828,
+        "boundary_mass": 0.8999999999999999,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 1,
+        "report_entropy": 1.5954618442383217
+      },
+      {
+        "question_id": 19,
+        "js": 0.23941277096142016,
+        "boundary_mass": 0.6,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 1,
+        "report_entropy": 1.5709505944546687
+      },
+      {
+        "question_id": 20,
+        "js": 0.15018217868568312,
+        "boundary_mass": 0.8999999999999999,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 1,
+        "report_entropy": 1.5954618442383217
+      },
+      {
+        "question_id": 21,
+        "js": 0.2950373361143285,
+        "boundary_mass": 0.44999999999999996,
+        "is_piling": true,
+        "options_at_min": 3,
+        "options_at_max": 0,
+        "report_entropy": 1.7060075793123284
+      },
+      {
+        "question_id": 22,
+        "js": 0.23164299561334112,
+        "boundary_mass": 0.15,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 0,
+        "report_entropy": 1.6814963295286753
+      },
+      {
+        "question_id": 23,
+        "js": 0.07163063413825109,
+        "boundary_mass": 0.8999999999999999,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 1,
+        "report_entropy": 1.5954618442383217
+      },
+      {
+        "question_id": 24,
+        "js": 0.43417665580578574,
+        "boundary_mass": 0.8999999999999999,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 1,
+        "report_entropy": 1.5954618442383217
+      },
+      {
+        "question_id": 25,
+        "js": 0.08082589876607049,
+        "boundary_mass": 0.8999999999999999,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 1,
+        "report_entropy": 1.5954618442383217
+      },
+      {
+        "question_id": 26,
+        "js": 0.45809138768872715,
+        "boundary_mass": 0.15,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 0,
+        "report_entropy": 1.319035274338866
+      },
+      {
+        "question_id": 27,
+        "js": 0.551255464831363,
+        "boundary_mass": 0.3,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 0,
+        "report_entropy": 1.7854752972273342
+      },
+      {
+        "question_id": 28,
+        "js": 0.1125501729226416,
+        "boundary_mass": 0.6,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 1,
+        "report_entropy": 1.490468570732828
+      },
+      {
+        "question_id": 29,
+        "js": 0.05998987536951443,
+        "boundary_mass": 0.8999999999999999,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 1,
+        "report_entropy": 1.5954618442383217
+      },
+      {
+        "question_id": 30,
+        "js": 0.48469501948937155,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.8464393446710154
+      },
+      {
+        "question_id": 31,
+        "js": 0.34518466385695823,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9854752972273344
+      },
+      {
+        "question_id": 32,
+        "js": 0.3981570565658695,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.58481870497303
+      },
+      {
+        "question_id": 33,
+        "js": 0.3957700779409173,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.721928094887362
+      },
+      {
+        "question_id": 34,
+        "js": 0.6054135771057597,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9219280948873623
+      },
+      {
+        "question_id": 35,
+        "js": 0.2551211292243394,
+        "boundary_mass": 0.8999999999999999,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 1,
+        "report_entropy": 1.5954618442383217
+      },
+      {
+        "question_id": 36,
+        "js": 0.5914012891647211,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9709505944546686
+      },
+      {
+        "question_id": 37,
+        "js": 0.6785322918129346,
+        "boundary_mass": 0.15,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 0,
+        "report_entropy": 1.9527241956246546
+      },
+      {
+        "question_id": 38,
+        "js": 0.5968583540219401,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9854752972273344
+      },
+      {
+        "question_id": 39,
+        "js": 0.21871849305314872,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9709505944546686
+      }
+    ],
+    "(20,55)": [
+      {
+        "question_id": 0,
+        "js": 0.1943155324177414,
+        "boundary_mass": 0.2,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 0,
+        "report_entropy": 1.9854752972273344
+      },
+      {
+        "question_id": 1,
+        "js": 0.4381247306107906,
+        "boundary_mass": 0.6000000000000001,
+        "is_piling": true,
+        "options_at_min": 3,
+        "options_at_max": 0,
+        "report_entropy": 1.9219280948873623
+      },
+      {
+        "question_id": 2,
+        "js": 0.4566795548924871,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.9527241956246546
+      },
+      {
+        "question_id": 3,
+        "js": 0.33771004489390644,
+        "boundary_mass": 0.2,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 0,
+        "report_entropy": 1.9261207468426806
+      },
+      {
+        "question_id": 4,
+        "js": 0.603558805189276,
+        "boundary_mass": 0.2,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 0,
+        "report_entropy": 1.8464393446710154
+      },
+      {
+        "question_id": 5,
+        "js": 0.21776656189803162,
+        "boundary_mass": 0.2,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 0,
+        "report_entropy": 1.9854752972273344
+      },
+      {
+        "question_id": 6,
+        "js": 0.44123822716532524,
+        "boundary_mass": 0.2,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 0,
+        "report_entropy": 1.9261207468426806
+      },
+      {
+        "question_id": 7,
+        "js": 0.47549168578000073,
+        "boundary_mass": 0.4,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 0,
+        "report_entropy": 1.9588718484453602
+      },
+      {
+        "question_id": 8,
+        "js": 0.591990838975043,
+        "boundary_mass": 0.6000000000000001,
+        "is_piling": true,
+        "options_at_min": 3,
+        "options_at_max": 0,
+        "report_entropy": 1.9219280948873623
+      },
+      {
+        "question_id": 9,
+        "js": 0.3934859245595838,
+        "boundary_mass": 0.2,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 0,
+        "report_entropy": 1.903701696057348
+      },
+      {
+        "question_id": 10,
+        "js": 0.2383852011224324,
+        "boundary_mass": 0.4,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 0,
+        "report_entropy": 1.9709505944546686
+      },
+      {
+        "question_id": 11,
+        "js": 0.22189672564353607,
+        "boundary_mass": 0.4,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 0,
+        "report_entropy": 1.9709505944546686
+      },
+      {
+        "question_id": 12,
+        "js": 0.30231657897368347,
+        "boundary_mass": 0.2,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 0,
+        "report_entropy": 1.8464393446710154
+      },
+      {
+        "question_id": 13,
+        "js": 0.3213023877451762,
+        "boundary_mass": 0.6000000000000001,
+        "is_piling": true,
+        "options_at_min": 3,
+        "options_at_max": 0,
+        "report_entropy": 1.9219280948873623
+      },
+      {
+        "question_id": 14,
+        "js": 0.3915843176065318,
+        "boundary_mass": 0.4,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 0,
+        "report_entropy": 1.9709505944546686
+      },
+      {
+        "question_id": 15,
+        "js": 0.19815536959844723,
+        "boundary_mass": 0.75,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 1,
+        "report_entropy": 1.6814963295286753
+      },
+      {
+        "question_id": 16,
+        "js": 0.31218788424730637,
+        "boundary_mass": 0.9500000000000001,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 1,
+        "report_entropy": 1.6192407046368489
+      },
+      {
+        "question_id": 17,
+        "js": 0.6211140197161031,
+        "boundary_mass": 0.9500000000000001,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 1,
+        "report_entropy": 1.6192407046368489
+      },
+      {
+        "question_id": 18,
+        "js": 0.5351387959596818,
+        "boundary_mass": 0.9500000000000001,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 1,
+        "report_entropy": 1.6192407046368489
+      },
+      {
+        "question_id": 19,
+        "js": 0.27615651916226064,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.490468570732828
+      },
+      {
+        "question_id": 20,
+        "js": 0.19836774920598255,
+        "boundary_mass": 0.9500000000000001,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 1,
+        "report_entropy": 1.6192407046368489
+      },
+      {
+        "question_id": 21,
+        "js": 0.19466498193323445,
+        "boundary_mass": 0.6000000000000001,
+        "is_piling": true,
+        "options_at_min": 3,
+        "options_at_max": 0,
+        "report_entropy": 1.9219280948873623
+      },
+      {
+        "question_id": 22,
+        "js": 0.18953021647310886,
+        "boundary_mass": 0.4,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 0,
+        "report_entropy": 1.7609640474436812
+      },
+      {
+        "question_id": 23,
+        "js": 0.12887291226680464,
+        "boundary_mass": 0.9500000000000001,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 1,
+        "report_entropy": 1.6192407046368489
+      },
+      {
+        "question_id": 24,
+        "js": 0.4931053803974773,
+        "boundary_mass": 0.9500000000000001,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 1,
+        "report_entropy": 1.6192407046368489
+      },
+      {
+        "question_id": 25,
+        "js": 0.11836178784545565,
+        "boundary_mass": 0.9500000000000001,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 1,
+        "report_entropy": 1.6192407046368489
+      },
+      {
+        "question_id": 26,
+        "js": 0.5586594422660318,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 0.847584679824574
+      },
+      {
+        "question_id": 27,
+        "js": 0.5106382108053524,
+        "boundary_mass": 0.2,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 0,
+        "report_entropy": 1.6804820237218405
+      },
+      {
+        "question_id": 28,
+        "js": 0.11369175021122321,
+        "boundary_mass": 0.55,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 1,
+        "report_entropy": 1.6387586809150083
+      },
+      {
+        "question_id": 29,
+        "js": 0.11076208783633999,
+        "boundary_mass": 0.9500000000000001,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 1,
+        "report_entropy": 1.6192407046368489
+      },
+      {
+        "question_id": 30,
+        "js": 0.4846000402538513,
+        "boundary_mass": 0.4,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 0,
+        "report_entropy": 1.9709505944546686
+      },
+      {
+        "question_id": 31,
+        "js": 0.34518466385695823,
+        "boundary_mass": 0.2,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 0,
+        "report_entropy": 1.9854752972273344
+      },
+      {
+        "question_id": 32,
+        "js": 0.5735187491824998,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.7884807170564159
+      },
+      {
+        "question_id": 33,
+        "js": 0.3957700779409173,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 1.721928094887362
+      },
+      {
+        "question_id": 34,
+        "js": 0.6056015393694149,
+        "boundary_mass": 0.4,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 0,
+        "report_entropy": 1.9709505944546686
+      },
+      {
+        "question_id": 35,
+        "js": 0.1852842138694691,
+        "boundary_mass": 0.2,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 0,
+        "report_entropy": 1.7854752972273342
+      },
+      {
+        "question_id": 36,
+        "js": 0.5914012891647211,
+        "boundary_mass": 0.4,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 0,
+        "report_entropy": 1.9709505944546686
+      },
+      {
+        "question_id": 37,
+        "js": 0.6097327608860095,
+        "boundary_mass": 0.4,
+        "is_piling": false,
+        "options_at_min": 2,
+        "options_at_max": 0,
+        "report_entropy": 1.9709505944546686
+      },
+      {
+        "question_id": 38,
+        "js": 0.48096411205265455,
+        "boundary_mass": 0.2,
+        "is_piling": false,
+        "options_at_min": 1,
+        "options_at_max": 0,
+        "report_entropy": 1.9854752972273344
+      },
+      {
+        "question_id": 39,
+        "js": 0.1628872348697466,
+        "boundary_mass": 0,
+        "is_piling": false,
+        "options_at_min": 0,
+        "options_at_max": 0,
+        "report_entropy": 2.0
+      }
+    ]
+  }
+}

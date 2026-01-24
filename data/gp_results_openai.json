@@ -1,0 +1,56 @@
+{
+  "config": {
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "n_trials": 10,
+    "n_samples": 30,
+    "temperature": 1.0,
+    "timestamp": "2026-01-19T14:41:17.302969"
+  },
+  "results": [
+    {
+      "constraint": "(5,80)",
+      "n_trials": 10,
+      "mean_js": 0.20599451639038802,
+      "std_js": 0.06922637615407005,
+      "mean_boundary_mass": 0.0,
+      "piling_rate": 0.0,
+      "mean_options_at_min": 0.0,
+      "mean_options_at_max": 0.0,
+      "mean_report_entropy": 1.9763903059580001
+    },
+    {
+      "constraint": "(10,70)",
+      "n_trials": 10,
+      "mean_js": 0.23665909729189555,
+      "std_js": 0.050522501528903835,
+      "mean_boundary_mass": 0.0,
+      "piling_rate": 0.0,
+      "mean_options_at_min": 0.0,
+      "mean_options_at_max": 0.0,
+      "mean_report_entropy": 1.9724030647319353
+    },
+    {
+      "constraint": "(15,60)",
+      "n_trials": 10,
+      "mean_js": 0.20282319188634013,
+      "std_js": 0.06936393478436166,
+      "mean_boundary_mass": 0.015,
+      "piling_rate": 0.0,
+      "mean_options_at_min": 0.1,
+      "mean_options_at_max": 0.0,
+      "mean_report_entropy": 1.961523431777773
+    },
+    {
+      "constraint": "(20,55)",
+      "n_trials": 10,
+      "mean_js": 0.1928113320643022,
+      "std_js": 0.05523974643087871,
+      "mean_boundary_mass": 0.3,
+      "piling_rate": 0.0,
+      "mean_options_at_min": 1.5,
+      "mean_options_at_max": 0.0,
+      "mean_report_entropy": 1.938534845252807
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+site_name: Epistemic Channel Divergence
+site_description: Measuring divergence between behavioral and declarative beliefs in LLMs
+site_url: https://meadowlark-bradsher.github.io/epistemic-channel-divergence/
+
+theme:
+  name: material
+  palette:
+    scheme: slate
+    primary: deep-purple
+    accent: amber
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - content.code.copy
+
+nav:
+  - Home: index.md
+  - Findings:
+    - Key Results: findings/index.md
+    - Belief-Action Decoupling: findings/decoupling.md
+  - Experiments:
+    - Overview: experiments/index.md
+    - Belief Probe Baseline: experiments/belief-probe.md
+    - Gravitational Pull: experiments/gravitational-pull.md
+    - Alignment Regularizer: experiments/alignment-regularizer.md
+  - Lab Notes:
+    - Belief Probe Notes: labnotes/belief-probe-notes.md
+    - Gravitational Pull Experiment: labnotes/gravitational-pull-experiment.md
+    - Token Belief vs Stated Belief: labnotes/token-belief-vs-stated-belief.md
+
+markdown_extensions:
+  - tables
+  - admonition
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.arithmatex:
+      generic: true
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+plugins:
+  - search
