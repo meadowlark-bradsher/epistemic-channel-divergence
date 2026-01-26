@@ -1,16 +1,26 @@
 # Gravitational Pull Experiment
 
-Testing whether constraints displace or eliminate the uniform hedging attractor.
+Testing whether constraints eliminate or merely displace the uniform hedging attractor.
 
 ## Hypothesis
 
-When forced to break the uniform attractor via explicit constraints (e.g., "allocate 5-80% per option"), models don't distribute probability mass according to genuine beliefs. Instead, they pile mass at constraint boundaries—revealing a **residual attractor** toward uniformity.
+When forced to break the uniform attractor via explicit constraints, models don't distribute probability mass according to genuine beliefs. Instead, they pile mass at constraint boundaries—revealing a **residual attractor** toward uniformity.
 
-The uniform attractor isn't eliminated, just displaced.
+## What This Experiment Falsifies
+
+- **Claim**: "Anti-uniform constraints reveal true beliefs"
+- **Result**: Partially falsified. Constraints reveal *some* variation but also induce boundary piling.
+
+- **Claim**: "The uniform attractor is fundamental to model architecture"
+- **Result**: Falsified. Models *can* express non-uniform distributions when constrained.
+
+## What This Experiment Does NOT Claim
+
+- That boundary piling makes constraints useless (they're still informative)
+- That all providers show equal gravitational pull (they don't)
+- That tighter constraints are always worse (depends on research question)
 
 ## Constraint Levels
-
-We sweep through progressively tighter bounds:
 
 | Level | Bounds | Interior Space |
 |-------|--------|----------------|
@@ -21,16 +31,15 @@ We sweep through progressively tighter bounds:
 
 ## Usage
 
-### Single Question Sweep
-
 ```bash
+# Single question sweep
 python experiments/gravitational_pull.py openai --n-trials 10 --verbose
-```
 
-### Multi-Question Sweep
-
-```bash
+# Multi-question sweep
 python experiments/gravitational_pull.py openai --multi-question -o data/gp_results.json
+
+# All providers
+python experiments/gravitational_pull.py --all-providers --multi-question
 ```
 
 ### Options
@@ -44,70 +53,30 @@ python experiments/gravitational_pull.py openai --multi-question -o data/gp_resu
 
 ## Key Metric: Boundary Mass
 
-Boundary mass = fraction of probability allocated within 3% of min/max bounds:
-
 ```python
-boundary_mass = sum(p for p in probs if abs(p - min) < 0.03 or abs(p - max) < 0.03)
+boundary_mass = sum(p for p in probs
+                    if abs(p - min_bound) < 0.03
+                    or abs(p - max_bound) < 0.03)
 ```
 
-If the gravitational pull hypothesis is correct, boundary mass should **increase** as constraints tighten.
+If gravitational pull exists, boundary mass should **increase** as constraints tighten.
 
-## Results
+## Key Results
 
-### 4-Provider Comparison
+| Provider | (5,80) | (20,55) | Pull Strength |
+|----------|--------|---------|---------------|
+| OpenAI | 17.9% | 42.8% | **STRONG** |
+| Qwen 2.5 | 18.4% | 37.8% | **STRONG** |
+| Llama 3.1 | 9.9% | 16.2% | MODERATE |
+| Gemini | 28.4% | 30.6% | WEAK |
 
-| Constraint | OpenAI | Gemini | Llama 3.1 | Qwen 2.5 |
-|------------|--------|--------|-----------|----------|
-| (5,80) | 17.9% | 28.4% | 9.9% | 18.4% |
-| (10,70) | 33.2% | 37.0% | 9.8% | 35.0% |
-| (15,60) | 32.2% | 29.6% | 8.6% | 38.1% |
-| (20,55) | **42.8%** | 30.6% | 16.2% | **37.8%** |
+## Delivers
 
-### Gravitational Pull Strength
-
-| Provider | Trend (5,80 → 20,55) | Strength |
-|----------|---------------------|----------|
-| OpenAI gpt-4o-mini | **+24.9%** | STRONG |
-| Qwen 2.5 7B | **+19.3%** | STRONG |
-| Llama 3.1 8B | +6.4% | MODERATE |
-| Gemini 2.0-flash | +2.3% | WEAK |
-
-## Interpretation
-
-### Strong Pull (OpenAI, Qwen)
-
-Boundary mass increases dramatically as constraints tighten. These models clearly displace hedging to constraint boundaries when squeezed.
-
-### Moderate Pull (Llama)
-
-Lower baseline boundary mass with modest increase. Less prone to boundary piling overall.
-
-### Weak Pull (Gemini)
-
-Starts with highest baseline but doesn't increase under pressure. Hedges at boundaries by default rather than when forced.
-
-## Visualization
-
-Expected pattern for strong gravitational pull:
-
-```
-Constraint   Boundary Mass
-(5,80)       ████░░░░░░░░░░░░░░░░  18%
-(10,70)      ███████░░░░░░░░░░░░░  33%
-(15,60)      ███████░░░░░░░░░░░░░  32%
-(20,55)      █████████░░░░░░░░░░░  43%
-               ↑
-         Mass piles at edges
-```
-
-## Implications
-
-1. **Anti-uniform constraints don't reveal true beliefs** - They just shift where hedging occurs
-2. **Boundary piling is a tell** - High boundary mass suggests constrained hedging, not genuine uncertainty
-3. **Provider differences matter** - Different models have different hedging strategies
+- F5: Gravitational pull (displaced attractor)
+- Provider-specific hedging strategies
+- Evidence that constraints don't reveal "true" beliefs
 
 ## Related
 
-- [Belief Probe Baseline](belief-probe.md) - The foundational experiment
-- [Alignment Regularizer](alignment-regularizer.md) - Testing if incentives help
-- [Gravitational Pull Notes](../labnotes/gravitational-pull-experiment.md) - Detailed lab notes
+- [Findings: Gravitational Pull](../findings/gravitational-pull.md)
+- [Findings: Uniform Attractor](../findings/uniform-attractor.md)

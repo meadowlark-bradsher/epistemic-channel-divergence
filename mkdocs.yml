@@ -16,17 +16,25 @@ theme:
 nav:
   - Home: index.md
   - Findings:
-    - Key Results: findings/index.md
-    - Belief-Action Decoupling: findings/decoupling.md
+    - Overview: findings/index.md
+    - Uniform Attractor: findings/uniform-attractor.md
+    - Belief-Action Decoupling: findings/belief-action-decoupling.md
+    - Probe Order Effects: findings/probe-order-effects.md
+    - Gravitational Pull: findings/gravitational-pull.md
+    - Structural Sensitivity: findings/structural-sensitivity.md
+    - Measurement Implications: findings/measurement-implications.md
   - Experiments:
     - Overview: experiments/index.md
     - Belief Probe Baseline: experiments/belief-probe.md
     - Gravitational Pull: experiments/gravitational-pull.md
     - Alignment Regularizer: experiments/alignment-regularizer.md
+    - ESI: experiments/esi.md
+    - Ensemble Bootstrap: experiments/ensemble-bootstrap.md
   - Lab Notes:
     - Belief Probe Notes: labnotes/belief-probe-notes.md
-    - Gravitational Pull Experiment: labnotes/gravitational-pull-experiment.md
-    - Token Belief vs Stated Belief: labnotes/token-belief-vs-stated-belief.md
+    - Gravitational Pull: labnotes/gravitational-pull-experiment.md
+    - Token vs Stated Belief: labnotes/token-belief-vs-stated-belief.md
+    - ESI Experiment: labnotes/esi-experiment.md
 
 markdown_extensions:
   - tables
