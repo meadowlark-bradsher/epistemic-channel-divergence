@@ -1,4 +1,5 @@
 # Epistemic Channel Divergence
+![Probing AI Minds: How Different Questions Reveal Hidden Beliefs](images/probing-ai-minds.png)
 
 Research toolkit for measuring the divergence between what LLMs **believe** (behavioral/token-level) and what they **report** (declarative self-reports).
 
@@ -6,7 +7,6 @@ Research toolkit for measuring the divergence between what LLMs **believe** (beh
 
 **Self-reported probabilities are not introspective access.** They are outputs of a learned reporting policy that operates largely independently of the model's actual decision-making process.
 
-![Probing AI Minds: How Different Questions Reveal Hidden Beliefs](images/probing-ai-minds.png)
 
 ## The Three-Layer Model
 

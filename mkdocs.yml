@@ -15,6 +15,7 @@ theme:
 
 nav:
   - Home: index.md
+  - Methods: methods/methods.md
   - Findings:
     - Overview: findings/index.md
     - Uniform Attractor: findings/uniform-attractor.md
