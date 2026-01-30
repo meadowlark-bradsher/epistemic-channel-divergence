@@ -23,11 +23,11 @@ With true logprobs (OpenAI, Gemini):
 Corr(JS_divergence, H_action) ≈ -0.5
 ```
 
-| Action Entropy | Mean JS Divergence | Interpretation |
-|----------------|-------------------|----------------|
-| Low (<1 bit) | ~0.45 | Severe decoupling |
-| Medium (1-1.5 bits) | ~0.35 | Moderate decoupling |
-| High (>1.5 bits) | ~0.25 | Lower decoupling |
+| Action Entropy      | Mean JS Divergence | Interpretation      |
+| ------------------- | ------------------ | ------------------- |
+| Low (<1 bit)        | ~0.45              | Severe decoupling   |
+| Medium (1-1.5 bits) | ~0.35              | Moderate decoupling |
+| High (>1.5 bits)    | ~0.25              | Lower decoupling    |
 
 When uncertain (high entropy), reports align better with behavior. When confident (low entropy), models hedge in reports while acting decisively.
 

@@ -1,223 +1,185 @@
 # Epistemic Channel Divergence
 
-Research toolkit for measuring the divergence between what LLMs **believe** (behavioral/token-level) and what they **report** (declarative self-reports).
+**What LLMs say they believe ≠ what their actions reveal.**
 
-## LLM Reliability: Bridging the Gap Between Action and Reported Belief
+When you ask a language model "How confident are you?", the answer comes from a learned reporting policy, not introspective access to internal states. This repository provides tools to measure the divergence between three distinct channels: what models **do** (action distributions), what they **say** (self-reports), and what they **think they're doing** (reasoning traces).
 
-1.0 The Core Challenge: Default AI Reporting is Misleading
+## The Core Finding
 
-The reliability of any automated system powered by a Large Language Model (LLM) depends on a single factor: our ability to accurately interpret its confidence. Failure to do so exposes the organization to significant operational and reputational risk. Without a clear view into a model's certainty, we cannot safely delegate high-stakes decisions.
+Models reliably produce uniform probability reports (25/25/25/25) while simultaneously taking confident actions (>90% on a single choice). This isn't confusion - it's a stable attractor in the reporting system that operates largely independently of the decision-making process.
 
-Our analysis dictates a fundamental challenge with the default behavior of LLMs. Absent any constraints, models will report a uniform probability distribution—for example, assigning exactly 25% confidence to each of four multiple-choice options—on 100% of queries. Critically, they do this regardless of how confident their underlying action is. A model may be internally prepared to select one answer with over 90% certainty but will still report a perfectly balanced 25/25/25/25 split when asked.
+**Implications**: 
+- Self-reported calibration metrics may be measuring report quality, not belief quality
+- Belief elicitation requires constrained prompts that break the uniform attractor
+- Action distributions (via logprobs) reveal confidence that self-reports obscure
 
-For leadership, the strategic imperative is to interpret this correctly: this behavior is not a sign of ignorance or incapacity. Instead, it is a learned "safe" policy developed during training to avoid being penalized for incorrect high-confidence answers. The key takeaway is that a model's default self-report on its confidence cannot be taken at face value. This misleading "safe" reporting is not random noise; it is the surface-level symptom of a deeper, more paradoxical behavior we term "belief-action decoupling."
+## What's Here
 
-2.0 The Decoupling Paradox: High Confidence in Action, High Uncertainty in Reporting
+```
+epistemic-channel-divergence/
+├── findings/          # Seven stable, replicated claims about LLM belief systems
+├── methods/           # How to measure belief divergence correctly  
+├── experiments/       # Runnable code to reproduce each finding
+└── labnotes/          # Research provenance (key discoveries, dated)
+```
 
-The mismatch between a model's internal conviction and its external communication can be described as belief-action decoupling. In simple terms, what the model does is disconnected from what it reports about its beliefs. Understanding and managing this decoupling is of paramount strategic importance for any team deploying LLMs in roles that require reliable decision-making.
+## Quick Start
 
-Our research uncovered a startling paradox. Using precise measurements of the model's internal state—true logprobs (a direct and precise measurement of the model's internal probability calculations)—we found that the mismatch between action and reporting is highest precisely when the model is most committed to its chosen action. This isn't an occasional quirk; it is a predictable inverse correlation. As the model's certainty in its action rises, its reported uncertainty rises in lockstep. This means the model projects maximum uncertainty at the exact moment it has the highest internal conviction, creating a critical blind spot for risk management.
+```bash
+# Setup
+git clone https://github.com/meadowlark-bradsher/epistemic-channel-divergence.git
+cd epistemic-channel-divergence
+echo "OPENAI_API_KEY=sk-..." > .env
+echo "GOOGLE_API_KEY=..." >> .env
+pip install -r requirements.txt
 
-The model may appear most uncertain at the exact moment it is most decisive. This is a fundamental contradiction we must manage.
+# Core experiment: Baseline belief probe
+python experiments/belief_probe_baseline.py
 
-Recognizing this core paradox is the first step. The next is to deploy specific methods designed to diagnose and correct it, creating more aligned and reliable AI systems.
-
-3.0 Strategic Interventions: A Toolkit for Improving AI Alignment
-
-The behavioral issues we've identified are not immutable flaws; they are manageable dynamics. The following interventions represent a strategic toolkit for exerting deliberate control over model behavior, enabling our teams to move from passive operators to active managers of AI-driven outcomes.
-
-3.1 The Foundational Fix: Eliciting Graded Beliefs
-
-The misleading uniform reporting behavior can be effectively overcome. Our findings show that applying a simple and mild "anti-uniform constraint"—such as requiring that probabilities fall between 5% and 80%—compels the model to provide more informative and nuanced reports on its uncertainty. This intervention is remarkably effective, causing the model's use of misleading uniform reports to plummet from nearly 100% to less than 2%. This successfully breaks the model's habit of defaulting to a safe, uninformative state without forcing it to report extreme, unsupported confidence levels.
-
-3.2 Choosing the Right Tool for the Task: A Comparative Analysis
-
-Different prompting strategies yield dramatically different results depending on the nature of the task. The choice between these interventions is a strategic trade-off between performance on simple tasks and stability on complex ones. One optimizes for speed in known environments, while the other provides resilience in unpredictable ones. The following table compares two common approaches: Chain-of-Thought (CoT) and Introspective Framing.
-
-Intervention Strategy	Strategic Application & Risk Profile
-Chain-of-Thought (CoT)	Use Case: Best for easy, well-defined problems where it improves alignment.<br>Risk: Acts as a "variance amplifier" on ambiguous or adversarial problems, significantly worsening performance and leading to extreme failures. It collapses the model's reasoning into a single narrative, which is dangerously brittle when multiple interpretations are plausible.
-Introspective Framing	Use Case: The most stable and reliable approach for ambiguous and complex problems.<br>Risk: It is not a pure "readout" of truth but a "stabilizer" that regularizes the model's behavior, making it a safer default for heterogeneous task environments where problem difficulty is unpredictable.
-
-3.3 The Power of Sequencing: Anchoring Belief Before Action
-
-A simple change in the sequence of operations can produce a powerful alignment effect. Our research consistently shows that requiring the model to first declare its beliefs before it takes an action serves as an effective anchoring mechanism. This "Report-then-Act" sequence consistently reduces the mismatch between the model's stated confidence and its subsequent choice, effectively encouraging the model to act in a way that is more consistent with its declared beliefs.
-
-The interventions in our toolkit are powerful, but without the correct measurement infrastructure, their effects are invisible and their value cannot be proven. This brings us to the most foundational requirement for reliable AI systems.
-
-4.0 The Foundational Requirement: Accurate Measurement is Non-Negotiable
-
-The value of any intervention is lost without rigorous and accurate methods of measurement—a core principle of any data-driven decision-making process. In the context of LLMs, this means choosing the right tool to assess the model's internal state.
-
-Our analysis revealed a critical difference between two methods for measuring a model's action confidence: "sampling-based" estimates and true logprobs. Relying on sampling, a common and computationally cheaper method, can produce highly misleading data. In our analysis, sampling-based methods not only failed to detect the belief-action decoupling but produced data suggesting the exact opposite—that belief and action were aligned. This creates a dangerously false sense of security.
-
-For any serious analysis, monitoring, or reliable deployment of LLMs, using true logprobs is an essential, non-negotiable requirement. This is not merely a technical best practice; it is a prerequisite for governance. Any team deploying an LLM without this level of measurement is operating without the necessary controls to manage risk.
-
-5.0 Strategic Summary and Forward Outlook
-
-These findings provide a new, more nuanced framework for understanding and managing LLM behavior. Rather than viewing a model as a monolithic entity, we must approach its outputs with greater sophistication, recognizing the distinct and manageable components of its decision-making process.
-
-The core conclusion of this research is that an LLM's belief, its action, and its reporting are "partially independent control surfaces." In strategic terms, this means we have distinct levers to pull to shape AI behavior. We can manage risk not by treating the model as an inscrutable black box, but by actively tuning its reporting, reasoning, and actions to align with our objectives.
-
-This remains an active and vital area of research. Future work will focus on gaining finer-grained control over model reasoning and generalizing these alignment techniques across different models and tasks. Mastering these control surfaces is the next frontier in creating defensible, high-value AI applications, moving our organization from being a consumer of AI to a master of its behavior.
-
-
-When asked to report their uncertainty, do language models give accurate probability estimates?
-
-**Answer: No.** We find robust belief-action decoupling across providers, where models act confidently but report broad uncertainty—and this divergence is *largest* when the model is most confident.
+# Output: Shows uniform reporting despite confident actions
+# → results/belief_probe_{timestamp}.json
+```
 
 ## Key Findings
 
-### F1. Uniform Reporting Attractor
-Without constraints, models overwhelmingly report uniform distributions (25/25/25/25) regardless of their actual token probabilities. This is a learned "safe" policy, not ignorance.
+**F1**: Models default to uniform reports (~98% of responses) regardless of action confidence  
+**F2**: Mild anti-uniform constraints break the attractor (→ 0-2% uniform reports)  
+**F3**: Divergence is *highest* when models are most confident (Corr(JS, H_action) ≈ -0.5)  
+**F4**: Probe order matters - Report→Act anchors and reduces divergence  
+**F5**: True logprobs essential - sampling-based estimation can invert correlations  
+**F6**: CoT amplifies variance on ambiguous questions (→ near-zero correlation)  
+**F7**: Introspection acts as a stabilizer across task types  
 
-### F2. Anti-Uniform Constraint Breaks It
-A mild constraint (5-80% per option) forces informative reports without inducing gaming. The uniform attractor is optional, not fundamental.
+→ [Full findings with evidence and strength ratings](docs/findings/index.md)
 
-### F3. Belief-Action Decoupling Increases with Confidence
-With true logprobs, mismatch (JS divergence) is **highest when action is most peaked**. Models act decisively while reporting broad uncertainty.
+## For Researchers
 
-### F4. Probe Order Matters
-- **Report→Act (Probe B)**: Best alignment—declared belief anchors subsequent action
-- **CoT→Act (Probe C)**: Variance amplifier—helps easy questions, hurts ambiguous ones
-- **Act→Introspect (Probe D)**: Most stable across heterogeneous tasks
+**If you care about LLM calibration or uncertainty quantification:**
+- [Findings](docs/findings/index.md) → What we know with high confidence
+- [Methods](docs/methods/methods.md) → Why certain measurement choices matter
+- Cites needed: belief elicitation, calibration metrics, UQ in LLMs
 
-### F5. Gravitational Pull
-When constrained away from uniform, models pile probability at constraint boundaries rather than expressing genuine interior beliefs. The uniform attractor is displaced, not eliminated.
+**If you're working on the Bridge Experiment or entropy coupling:**
+- This characterizes what's *in* token entropy (H_tok) before measuring flow
+- Self-reports may be thermodynamically inert - action distributions are where epistemic work happens
+- See: connection to H_tok ↔ H_sec coupling hypothesis
 
-## Experiments
+## For Practitioners
 
-### Belief Probe Baseline
-Compare behavioral vs declarative beliefs across four probe orderings:
+**If you need reliable uncertainty estimates from LLMs:**
+- Don't trust naive self-reports - they default to hedging
+- Use constrained elicitation (see [anti-uniform constraints](docs/methods/methods.md#mitigating-reporting-biases))
+- Extract action distributions via logprobs when available
+- Ensemble over probe orderings to marginalize position bias
 
-| Probe | Order | Purpose |
-|-------|-------|---------|
-| A | Act → Report | Post-hoc honesty |
-| B | Report → Act | Belief anchoring |
-| C | CoT → Act | Reasoning propagation |
-| D | Act → Introspect | Retrospective report |
+**If you're building with LLM APIs:**
+- OpenAI/Anthropic: Use `logprobs` parameter for action distributions
+- Gemini: Extract via direct API access to token probabilities
+- Local models (Ollama/vLLM): Verify logprob implementation - some smooth incorrectly
 
-```bash
-# Single probe run
-python experiments/belief_probe_baseline.py llama3.1:latest --anti-uniform -n 50
+## Running Experiments
 
-# Multi-question experiment
-python experiments/belief_probe_baseline.py --experiment2 --anti-uniform -o data/results.json
-```
-
-### Cross-Provider Comparison
-Compare OpenAI, Gemini, and local models:
-
-```bash
-python experiments/compare_providers.py --providers openai gemini --quick
-```
-
-### Gravitational Pull
-Test whether constraint tightening increases boundary piling:
+Each experiment targets specific findings and runs in <10 minutes:
 
 ```bash
-# Single question sweep
-python experiments/gravitational_pull.py openai --n-trials 10 --verbose
+# F1 & F2: Uniform reporting + anti-uniform fix
+python experiments/belief_probe_baseline.py --anti-uniform
 
-# Multi-question sweep across providers
-python experiments/gravitational_pull.py openai --multi-question -o data/gp_results.json
+# F3: Divergence vs confidence correlation  
+python experiments/belief_probe_baseline.py --logprobs
+
+# F4: Probe ordering effects
+python experiments/esi_runner.py --orderings all
+
+# F6 & F7: CoT and Introspection
+python experiments/esi_runner.py --interventions cot introspect
+
+# Full battery (OpenAI + Gemini, ~30min, ~$5)
+python experiments/esi_runner.py --providers openai gemini --full
 ```
 
-### Alignment Regularizer
-Test whether calibration incentives improve belief reporting:
+Results save to `results/` with timestamps. Analysis notebooks in `analysis/`.
 
-```bash
-python experiments/alignment_regularizer.py openai
+## Architecture: The Three-Layer Model
+
+Everything reduces to three layers with two attractors:
+
+**Layer 1: Action System**
+- Operates on token distributions  
+- Sensitive to position bias, framing, reasoning paths
+- Reveals confidence via logprobs (when available)
+- Unstable: 3-6x more variance than reports under perturbations
+
+**Layer 2: Reporting System**  
+- Learned policy for expressing uncertainty
+- Dominated by uniform hedge (primary) and boundary hedge (secondary)
+- Largely insensitive to incentives, calibration threats, small perturbations
+- Stabilized by RLHF pressure toward cautious expressions
+
+**Layer 3: Structural Symmetries**
+- Multiple-choice option order is a nuisance variable
+- Single-shot measurement samples one arbitrary embedding
+- Argmax flips in 52-64% of orderings (position bias alone)
+- Ensembling over orderings (K≈4) marginalizes symmetry
+
+→ [See methods for full treatment](docs/methods/methods.md)
+
+## Measurement Principles
+
+**What works:**
+- True logprobs for action distributions (not sampling estimates)
+- Anti-uniform constraints for breaking reporting attractors  
+- Ensemble measurement over probe orderings (K=4-6)
+- JS divergence for quantifying belief-report mismatch
+
+**What doesn't:**
+- Naive self-reports (uniform attractor dominates)
+- Sampling-based action estimates (introduces smoothing bias)
+- Single-shot measurement (confounded by position bias)
+- Incentive-based elicitation (reporting policy is pre-trained)
+
+→ [Methods document](docs/methods/methods.md) explains why each matters
+
+## Status
+
+**Stable** (replicated across providers):
+- F1-F5: Core divergence phenomena
+- Anti-uniform constraint effectiveness
+- Logprobs vs sampling distinction
+
+**Active Development**:
+- Provider-specific calibration curves
+- Adaptive probe selection policies  
+- Belief revision sequences (Act→Report→Act₂)
+- Connection to environmental ground truth
+
+**Open Questions**:
+- Is the reporting policy architecturally distinct or contextually triggered?
+- Can belief revision be controlled (vs mere confabulation)?
+- How does internal alignment relate to external accuracy?
+
+## Citation
+
+```bibtex
+@software{bradsher2025epistemic,
+  title={Epistemic Channel Divergence: Measuring Belief-Action-Report Decoupling in LLMs},
+  author={Bradsher, Meadowlark},
+  year={2025},
+  url={https://github.com/meadowlark-bradsher/epistemic-channel-divergence}
+}
 ```
 
-## Providers
+## Navigation
 
-The toolkit supports multiple inference backends:
+- **[Findings](docs/findings/index.md)** - Authoritative claims with evidence levels
+- **[Methods](docs/methods/)** - Experimental design and measurement principles  
+- **[Experiments](docs/experiments/index.md)** - Runnable code for each finding
+- **[Lab Notes](docs/labnotes/)** - Research provenance and key discoveries
 
-| Provider | Token Beliefs | Setup |
-|----------|---------------|-------|
-| OpenAI | True logprobs | `OPENAI_API_KEY` in `.env` |
-| Gemini | True logprobs | `GOOGLE_API_KEY` in `.env` |
-| llama.cpp | True logprobs | Run `llama-server -m model.gguf -c 4096` |
-| Ollama | Sampling-based | `ollama serve` (less accurate) |
+## Contact
 
-**Note:** True logprobs are essential for confidence-related claims. Sampling-based estimation can invert correlations.
+Questions, replications, or extensions? Open an issue or reach out.
 
-## Project Structure
+---
 
-```
-experiments/
-├── belief_probe_baseline.py    # Core probe harness
-├── compare_providers.py        # Cross-provider comparison
-├── gravitational_pull.py       # Constraint sweep experiments
-├── alignment_regularizer.py    # Calibration incentive tests
-├── generate_mc_questions.py    # Question generation
-├── providers.py                # Provider abstraction layer
-└── test_gemini.py              # Provider smoke test
-
-data/
-├── mc_questions.json           # 40 test questions (easy/ambiguous/adversarial)
-├── gp_mq_*.json               # Gravitational pull results by provider
-├── provider_comparison.json    # Cross-provider experiment results
-└── experiment2_results.json    # Multi-question probe results
-
-docs/labnotes/
-├── belief-probe-notes.md                  # Probe experiment notes
-├── gravitational-pull-experiment.md       # Constraint sweep analysis
-└── token-belief-vs-stated-belief.md       # Synthesis of findings
-```
-
-## Setup
-
-1. Create `.env` with API keys:
-   ```
-   OPENAI_API_KEY=sk-...
-   GOOGLE_API_KEY=...
-   ```
-
-2. For local models, install llama.cpp:
-   ```bash
-   brew install llama.cpp
-
-   # Download a model (e.g., Llama 3.1 8B)
-   huggingface-cli download bartowski/Meta-Llama-3.1-8B-Instruct-GGUF \
-       --include "Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf" \
-       --local-dir models/
-
-   # Start server
-   llama-server -m models/Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf -c 4096
-   ```
-
-3. No dependencies beyond Python stdlib (uses `urllib` for API calls).
-
-## Metrics
-
-- **JS Divergence**: Jensen-Shannon divergence between token distribution and reported probabilities
-- **Boundary Mass**: Fraction of reported probability within 3% of constraint bounds
-- **Report Entropy**: Shannon entropy of reported distribution
-- **Token Entropy**: Shannon entropy of behavioral (action) distribution
-
-## Results Summary
-
-### Provider Comparison (Gravitational Pull)
-
-| Provider | Boundary Mass (5,80) → (20,55) | Pull Strength |
-|----------|-------------------------------|---------------|
-| OpenAI gpt-4o-mini | 18% → 43% | **STRONG** |
-| Qwen 2.5 7B | 18% → 38% | **STRONG** |
-| Llama 3.1 8B | 10% → 16% | MODERATE |
-| Gemini 2.0-flash | 28% → 31% | WEAK |
-
-### Mean JS Divergence (Belief-Action Misalignment)
-
-| Provider | Mean JS |
-|----------|---------|
-| OpenAI gpt-4o-mini | 0.368 |
-| Gemini 2.0-flash | 0.373 |
-| Llama 3.1 8B | 0.374 |
-| Qwen 2.5 7B | 0.466 |
-
-All models show substantial belief-action misalignment (~0.37-0.47 JS divergence).
-
-## Takeaway
-
-LLMs exhibit a robust, learned decoupling between action confidence and reported uncertainty. Belief expression, reasoning, and action are partially independent control surfaces—measurable, intervenable, and not interchangeable.
+*This work is part of broader research on entropy coupling in language models (the Bridge Experiment). See: [meadowlark-bradsher.github.io](https://meadowlark-bradsher.github.io)*

@@ -1,7 +1,7 @@
 # Epistemic Channel Divergence
 ![Probing AI Minds: How Different Questions Reveal Hidden Beliefs](images/probing-ai-minds.png)
-
-Research toolkit for measuring the divergence between what LLMs **believe** (behavioral/token-level) and what they **report** (declarative self-reports).
+This research repository holds a chunk of the code and experimental results originating from my investigation into methods for reliable readings of LLM belief.  
+research toolkit for measuring the divergence between what LLMs **believe** (behavioral/token-level) and what they **report** (declarative self-reports).
 
 ## The Core Discovery
 

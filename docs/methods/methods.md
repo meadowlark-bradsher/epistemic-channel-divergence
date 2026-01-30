@@ -42,7 +42,8 @@ To ensure the generality of the findings, models from several major providers we
 
 * OpenAI
 * Gemini
-* Ollama
+* Llama3.1
+* Qwen2.5
 
 This experimental setup, combining controlled probes with stratified inputs across multiple models, provides the foundation for the measurement and analysis techniques that follow.
 
