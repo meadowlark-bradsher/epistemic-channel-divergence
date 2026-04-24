@@ -18,6 +18,7 @@ import math
 import random
 from collections import defaultdict
 from dataclasses import dataclass, asdict
+from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Tuple
 import sys
@@ -260,6 +261,7 @@ def run_ensemble_experiment(
     print(f"Loaded {len(questions)} questions")
 
     all_results = []
+    provider_models = {}
 
     for provider_name in providers:
         print(f"\n{'='*70}")
@@ -269,6 +271,7 @@ def run_ensemble_experiment(
         try:
             provider = get_provider(provider_name)
             print(f"Initialized: {provider.model_name}")
+            provider_models[provider_name] = provider.model_name
         except Exception as e:
             print(f"Failed: {e}")
             continue
@@ -367,6 +370,23 @@ def run_ensemble_experiment(
             for r in all_results:
                 f.write(json.dumps(r.to_dict()) + "\n")
         print(f"\nResults saved to: {output_path}")
+
+        metadata_path = output_path.with_suffix(".metadata.json")
+        metadata = {
+            "generated_at": datetime.now().isoformat(),
+            "script": str(Path(__file__).resolve()),
+            "questions_file": str(questions_file),
+            "providers": providers,
+            "provider_models": provider_models,
+            "n_orderings": n_orderings,
+            "max_items": max_items,
+            "seed": seed,
+            "anti_uniform": anti_uniform,
+            "bootstrap": do_bootstrap,
+        }
+        with open(metadata_path, "w") as f:
+            json.dump(metadata, f, indent=2)
+        print(f"Metadata JSON: {metadata_path}")
 
     return all_results
 

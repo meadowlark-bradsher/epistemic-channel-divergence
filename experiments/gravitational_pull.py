@@ -23,6 +23,7 @@ import json
 import math
 import argparse
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Dict, List, Tuple, Optional
 from datetime import datetime
 
@@ -39,6 +40,7 @@ from belief_probe_baseline import (
 
 # Import providers for multi-provider support
 from providers import get_provider, PROVIDERS, BaseProvider
+from providers import DEFAULT_OPENAI_MODEL, DEFAULT_GEMINI_MODEL
 
 
 @dataclass
@@ -73,6 +75,8 @@ CONSTRAINT_LEVELS = [
     ConstraintLevel(15, 60),  # Tight
     ConstraintLevel(20, 55),  # Very tight
 ]
+
+DEFAULT_QUESTIONS_FILE = Path(__file__).resolve().parent.parent / "data" / "mc_questions.json"
 
 
 @dataclass
@@ -221,7 +225,7 @@ Return EXACTLY this JSON format, no other text:
 
 def run_constraint_sweep(
     provider_name: str = "openai",
-    model_name: str = "gpt-4o-mini",
+    model_name: str = DEFAULT_OPENAI_MODEL,
     constraints: List[ConstraintLevel] = None,
     n_trials: int = 10,
     n_samples: int = 30,
@@ -397,8 +401,8 @@ def print_sweep_summary(results: List[SweepResult]):
 
 def run_multi_question_sweep(
     provider_name: str = "openai",
-    model_name: str = "gpt-4o-mini",
-    questions_file: str = "../data/mc_questions.json",
+    model_name: str = DEFAULT_OPENAI_MODEL,
+    questions_file: Optional[str] = None,
     constraints: List[ConstraintLevel] = None,
     n_samples: int = 20,
     temperature: float = 1.0,
@@ -408,6 +412,9 @@ def run_multi_question_sweep(
     """Run constraint sweep across multiple questions."""
     if constraints is None:
         constraints = CONSTRAINT_LEVELS
+
+    if questions_file is None:
+        questions_file = str(DEFAULT_QUESTIONS_FILE)
 
     print("=" * 70)
     print("GRAVITATIONAL PULL: Multi-Question Sweep")
@@ -504,6 +511,7 @@ def run_multi_question_sweep(
     if output_file:
         output_data = {
             "config": {
+                "script": str(Path(__file__).resolve()),
                 "provider": provider_name,
                 "model": model_name,
                 "questions_file": questions_file,
@@ -540,7 +548,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "-m", "--model",
         default=None,
-        help="Model name (default: gpt-4o-mini for openai, gemini-2.0-flash for gemini)"
+        help="Model name (default: gpt-4o-mini-2024-07-18 for openai, gemini-2.0-flash-001 for gemini)"
     )
     parser.add_argument(
         "-n", "--n-trials",
@@ -572,7 +580,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--questions",
-        default="../data/mc_questions.json",
+        default=str(DEFAULT_QUESTIONS_FILE),
         help="Questions file for multi-question mode"
     )
     parser.add_argument(
@@ -585,8 +593,8 @@ if __name__ == "__main__":
     # Set default model based on provider
     if args.model is None:
         defaults = {
-            "openai": "gpt-4o-mini",
-            "gemini": "gemini-2.0-flash",
+            "openai": DEFAULT_OPENAI_MODEL,
+            "gemini": DEFAULT_GEMINI_MODEL,
             "ollama": "llama3.1:latest",
             "llamacpp": "local",
         }
@@ -622,6 +630,7 @@ if __name__ == "__main__":
         if args.output:
             output_data = {
                 "config": {
+                    "script": str(Path(__file__).resolve()),
                     "provider": args.provider,
                     "model": args.model,
                     "n_trials": args.n_trials,

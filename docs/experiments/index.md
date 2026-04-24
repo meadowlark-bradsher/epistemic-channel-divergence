@@ -17,7 +17,7 @@ How to run each experiment and what it tests. Each experiment has a clear episte
 | Provider | Token Beliefs | Setup |
 |----------|---------------|-------|
 | OpenAI | True logprobs | `OPENAI_API_KEY` in `.env` |
-| Gemini | True logprobs | `GOOGLE_API_KEY` in `.env` |
+| Gemini | True logprobs | `GEMINI_API_KEY` in `.env` |
 | llama.cpp | True logprobs | `llama-server -m model.gguf` |
 | Ollama | Sampling-based | `ollama serve` |
 
@@ -28,15 +28,16 @@ How to run each experiment and what it tests. Each experiment has a clear episte
 
 ```bash
 # Environment setup
-cat > .env << EOF
-OPENAI_API_KEY=sk-...
-GOOGLE_API_KEY=...
-EOF
+pip install -r requirements.txt
+cp .env.example .env
+
+# Reproduce the checked-in pipeline
+make paper-pipeline
 
 # Core experiments
-python experiments/belief_probe_baseline.py --experiment2 --anti-uniform
-python experiments/gravitational_pull.py openai --multi-question
-python experiments/alignment_regularizer.py openai
+python experiments/belief_probe_baseline.py llama3.1:latest --experiment2 --anti-uniform
+python experiments/gravitational_pull.py -p openai --multi-question
+python experiments/alignment_regularizer.py -p openai
 
 # ESI experiments
 python experiments/esi_runner.py --providers openai gemini --full
@@ -45,22 +46,13 @@ python experiments/esi_ensemble.py --providers openai gemini --bootstrap
 
 ## Output Format
 
-All experiments output JSON with consistent structure:
+Outputs are script-specific rather than fully standardized:
 
-```json
-{
-  "provider": "openai",
-  "model": "gpt-4o-mini",
-  "results": [
-    {
-      "question_id": 1,
-      "action_distribution": {"A": 0.7, "B": 0.2, "C": 0.05, "D": 0.05},
-      "report_distribution": {"A": 0.3, "B": 0.25, "C": 0.25, "D": 0.2},
-      "js_divergence": 0.35
-    }
-  ]
-}
-```
+- `belief_probe_baseline.py`, `compare_providers.py`, `gravitational_pull.py`, and `alignment_regularizer.py` write JSON when `-o/--output` is provided.
+- `esi_runner.py` writes per-item JSONL plus a companion summary CSV.
+- `esi_ensemble.py` writes per-item JSONL and optional bootstrap summaries inside each record.
+
+Checked-in examples live in `data/` and `results/esi/`.
 
 ## Key Metrics
 

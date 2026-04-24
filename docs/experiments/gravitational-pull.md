@@ -33,22 +33,26 @@ When forced to break the uniform attractor via explicit constraints, models don'
 
 ```bash
 # Single question sweep
-python experiments/gravitational_pull.py openai --n-trials 10 --verbose
+python experiments/gravitational_pull.py -p openai --n-trials 10 --verbose
 
 # Multi-question sweep
-python experiments/gravitational_pull.py openai --multi-question -o data/gp_results.json
+python experiments/gravitational_pull.py -p openai --multi-question -o data/gp_results_openai.json
 
-# All providers
-python experiments/gravitational_pull.py --all-providers --multi-question
+# Repeat for another provider
+python experiments/gravitational_pull.py -p gemini --multi-question -o data/gp_mq_gemini.json
 ```
 
 ### Options
 
 | Flag | Description |
 |------|-------------|
+| `-p, --provider NAME` | Provider (`openai`, `gemini`, `ollama`, `llamacpp`) |
+| `-m, --model NAME` | Override the provider's default model |
 | `--n-trials N` | Trials per constraint level |
 | `--multi-question` | Use all 40 questions from test set |
+| `--questions FILE` | Question set (defaults to `data/mc_questions.json`) |
 | `--verbose` | Print detailed per-trial output |
+| `--base-url URL` | llama.cpp server URL when using `llamacpp` |
 | `-o FILE` | Output JSON file |
 
 ## Key Metric: Boundary Mass

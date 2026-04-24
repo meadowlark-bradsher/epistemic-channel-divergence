@@ -14,19 +14,27 @@ Usage:
 import argparse
 import json
 import os
+from datetime import datetime
 from pathlib import Path
 from typing import List, Dict
 
+DEFAULT_OUTPUT_FILE = Path(__file__).resolve().parent.parent / "data" / "mc_questions.json"
+DEFAULT_QUESTION_MODEL = "claude-sonnet-4-20250514"
+
 # Load .env file if present
 def load_dotenv():
-    env_path = Path(__file__).parent / ".env"
-    if env_path.exists():
-        with open(env_path) as f:
-            for line in f:
-                line = line.strip()
-                if line and not line.startswith("#") and "=" in line:
-                    key, _, value = line.partition("=")
-                    os.environ.setdefault(key.strip(), value.strip())
+    for env_path in [
+        Path(__file__).parent / ".env",
+        Path(__file__).parent.parent / ".env",
+    ]:
+        if env_path.exists():
+            with open(env_path) as f:
+                for line in f:
+                    line = line.strip()
+                    if line and not line.startswith("#") and "=" in line:
+                        key, _, value = line.partition("=")
+                        os.environ.setdefault(key.strip(), value.strip())
+            break
 
 load_dotenv()
 
@@ -103,7 +111,7 @@ def generate_with_anthropic(category: str, info: dict) -> List[Dict]:
     )
 
     message = client.messages.create(
-        model="claude-sonnet-4-20250514",
+        model=DEFAULT_QUESTION_MODEL,
         max_tokens=4096,
         messages=[
             {"role": "user", "content": prompt}
@@ -142,7 +150,7 @@ def generate_with_requests(category: str, info: dict) -> List[Dict]:
             "content-type": "application/json",
         },
         json={
-            "model": "claude-sonnet-4-20250514",
+            "model": DEFAULT_QUESTION_MODEL,
             "max_tokens": 4096,
             "messages": [
                 {"role": "user", "content": prompt}
@@ -205,7 +213,7 @@ def format_for_probe(question: Dict) -> str:
 
 def main():
     parser = argparse.ArgumentParser(description="Generate MC questions for belief probe")
-    parser.add_argument("-o", "--output", default="mc_questions.json",
+    parser.add_argument("-o", "--output", default=str(DEFAULT_OUTPUT_FILE),
                         help="Output JSON file")
     parser.add_argument("-c", "--categories", nargs="+",
                         choices=list(CATEGORIES.keys()),
@@ -228,7 +236,15 @@ def main():
     # Save to file
     output = {
         "metadata": {
+            "generated_at": datetime.now().isoformat(),
+            "generator": {
+                "provider": "anthropic",
+                "model": DEFAULT_QUESTION_MODEL,
+            },
+            "script": str(Path(__file__).resolve()),
             "total_questions": len(questions),
+            "categories_requested": args.categories or list(CATEGORIES.keys()),
+            "count_override": args.count,
             "categories": {cat: sum(1 for q in questions if q.get("category") == cat)
                           for cat in CATEGORIES},
         },

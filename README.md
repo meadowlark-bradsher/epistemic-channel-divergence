@@ -17,10 +17,12 @@ Models reliably produce uniform probability reports (25/25/25/25) while simultan
 
 ```
 epistemic-channel-divergence/
-├── findings/          # Seven stable, replicated claims about LLM belief systems
-├── methods/           # How to measure belief divergence correctly  
-├── experiments/       # Runnable code to reproduce each finding
-└── labnotes/          # Research provenance (key discoveries, dated)
+├── experiments/       # Runnable experiment scripts
+├── interventions/     # Perturbation and debiasing utilities
+├── data/              # Checked-in question sets and JSON outputs
+├── results/           # Checked-in JSONL / CSV outputs
+├── docs/              # Findings, methods, experiment pages, lab notes
+└── illustrations/     # Figure notes and illustration scripts
 ```
 
 ## Quick Start
@@ -29,15 +31,36 @@ epistemic-channel-divergence/
 # Setup
 git clone https://github.com/meadowlark-bradsher/epistemic-channel-divergence.git
 cd epistemic-channel-divergence
-echo "OPENAI_API_KEY=sk-..." > .env
-echo "GOOGLE_API_KEY=..." >> .env
+python -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
+cp .env.example .env
 
-# Core experiment: Baseline belief probe
-python experiments/belief_probe_baseline.py
+# Fill in any provider keys you plan to use
+# OPENAI_API_KEY=...
+# GEMINI_API_KEY=...
 
-# Output: Shows uniform reporting despite confident actions
-# → results/belief_probe_{timestamp}.json
+# Local Ollama baseline (sampling-based action estimates)
+python experiments/belief_probe_baseline.py llama3.1:latest --experiment2 --anti-uniform \
+  -o data/experiment2_results.json
+
+# Cross-provider comparison (true logprobs where available)
+python experiments/compare_providers.py --providers openai gemini --quick \
+  -o data/provider_comparison.json
+
+# ESI / structural sensitivity run
+python experiments/esi_runner.py --providers openai gemini --full \
+  -o results/esi/full_experiment.jsonl
+
+# Reproduce the paper pipeline from the checked-in question set
+make paper-pipeline
+
+# Run a fresh end-to-end pipeline including question generation
+# (requires ANTHROPIC_API_KEY or CLAUDE_API_KEY)
+make fresh-pipeline
+
+# Run regression tests
+make test
 ```
 
 ## Key Findings
@@ -73,9 +96,10 @@ python experiments/belief_probe_baseline.py
 - Ensemble over probe orderings to marginalize position bias
 
 **If you're building with LLM APIs:**
-- OpenAI/Anthropic: Use `logprobs` parameter for action distributions
+- OpenAI: Use `logprobs` for action distributions
 - Gemini: Extract via direct API access to token probabilities
-- Local models (Ollama/vLLM): Verify logprob implementation - some smooth incorrectly
+- llama.cpp: Use the OpenAI-compatible server with `logprobs`
+- Ollama in this repo is sampling-based only, so treat it as a baseline / fallback
 
 ## Running Experiments
 
@@ -83,22 +107,41 @@ Each experiment targets specific findings and runs in <10 minutes:
 
 ```bash
 # F1 & F2: Uniform reporting + anti-uniform fix
-python experiments/belief_probe_baseline.py --anti-uniform
+python experiments/belief_probe_baseline.py llama3.1:latest --experiment2 --anti-uniform \
+  -o data/experiment2_results.json
 
-# F3: Divergence vs confidence correlation  
-python experiments/belief_probe_baseline.py --logprobs
+# F3-F5: Cross-provider comparison + JS/entropy correlation
+python experiments/compare_providers.py --providers openai gemini --quick \
+  -o data/provider_comparison.json
 
-# F4: Probe ordering effects
-python experiments/esi_runner.py --orderings all
+# F5: Gravitational pull under tighter constraints
+python experiments/gravitational_pull.py -p openai --multi-question \
+  -o data/gp_results_openai.json
 
-# F6 & F7: CoT and Introspection
-python experiments/esi_runner.py --interventions cot introspect
+# F6 & F7: CoT, introspection, SOC, and order sensitivity
+python experiments/esi_runner.py --providers openai gemini --full \
+  -o results/esi/full_experiment.jsonl
 
-# Full battery (OpenAI + Gemini, ~30min, ~$5)
-python experiments/esi_runner.py --providers openai gemini --full
+# Ensemble measurement / position debiasing
+python experiments/esi_ensemble.py --providers openai gemini --bootstrap \
+  -o results/esi/ensemble_bootstrap.jsonl
 ```
 
-Results save to `results/` with timestamps. Analysis notebooks in `analysis/`.
+Checked-in artifacts already live in `data/` and `results/esi/`. There is currently no
+`analysis/` notebook directory; post-hoc analysis is script-driven (`experiments/esi_analysis.py`)
+and documented in `docs/labnotes/`.
+
+## Reproducibility
+
+- `requirements.txt` captures the Python dependencies needed to run experiments and build docs.
+- `.env.example` shows the provider variables used by the current scripts.
+- `Makefile` provides `paper-pipeline`, `fresh-pipeline`, and `test` entrypoints.
+- OpenAI and Gemini defaults are snapshot-pinned in code: `gpt-4o-mini-2024-07-18` and `gemini-2.0-flash-001`.
+- Question sets and several saved experiment outputs are committed under `data/`.
+- [data/README.md](data/README.md) documents the checked-in JSON artifacts and their provenance.
+- ESI raw outputs and summaries are committed under `results/esi/`.
+- [results/README.md](results/README.md) documents the checked-in ESI/ensemble artifacts.
+- The repo is script-first rather than notebook-first; the executable code lives in `experiments/` and `interventions/`.
 
 ## Architecture: The Three-Layer Model
 

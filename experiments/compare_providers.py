@@ -5,7 +5,7 @@ Runs the same probes across multiple providers (with true logprobs where availab
 and compares belief-action alignment patterns.
 
 Usage:
-    python compare_providers.py --questions mc_questions.json --providers openai gemini ollama
+    python compare_providers.py --providers openai gemini ollama
     python compare_providers.py --quick  # Quick test with 5 questions per category
 """
 
@@ -13,10 +13,19 @@ import argparse
 import json
 import math
 from dataclasses import dataclass, asdict
+from datetime import datetime
 from typing import Dict, List, Optional
 from pathlib import Path
 
-from providers import get_provider, BaseProvider, OPTIONS
+from providers import (
+    get_provider,
+    BaseProvider,
+    OPTIONS,
+    DEFAULT_OPENAI_MODEL,
+    DEFAULT_GEMINI_MODEL,
+)
+
+DEFAULT_QUESTIONS_FILE = Path(__file__).resolve().parent.parent / "data" / "mc_questions.json"
 
 
 @dataclass
@@ -160,7 +169,7 @@ PROBES = {
 
 def run_comparison(
     providers_config: List[dict],
-    questions_file: str,
+    questions_file: Optional[str],
     output_file: str = None,
     max_per_category: int = None,
     anti_uniform: bool = True,
@@ -169,6 +178,9 @@ def run_comparison(
     print("=" * 70)
     print("CROSS-PROVIDER BELIEF PROBE COMPARISON")
     print("=" * 70)
+
+    if questions_file is None:
+        questions_file = str(DEFAULT_QUESTIONS_FILE)
 
     # Load questions
     with open(questions_file) as f:
@@ -341,9 +353,11 @@ def run_comparison(
     if output_file:
         output_data = {
             "config": {
+                "script": str(Path(__file__).resolve()),
                 "questions_file": questions_file,
                 "n_questions": len(questions),
                 "anti_uniform": anti_uniform,
+                "generated_at": datetime.now().isoformat(),
                 "providers": [
                     {
                         "name": name,
@@ -362,7 +376,7 @@ def run_comparison(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Cross-provider belief probe comparison")
-    parser.add_argument("--questions", default="mc_questions.json", help="Questions JSON file")
+    parser.add_argument("--questions", default=str(DEFAULT_QUESTIONS_FILE), help="Questions JSON file")
     parser.add_argument("--providers", nargs="+", default=["openai", "gemini"],
                         help="Providers to compare")
     parser.add_argument("--output", "-o", help="Output JSON file")
@@ -377,9 +391,9 @@ if __name__ == "__main__":
         if p == "ollama":
             provider_configs.append({"name": "ollama", "model_name": "llama3.1:latest", "n_samples": 20})
         elif p == "openai":
-            provider_configs.append({"name": "openai", "model_name": "gpt-4o-mini"})
+            provider_configs.append({"name": "openai", "model_name": DEFAULT_OPENAI_MODEL})
         elif p == "gemini":
-            provider_configs.append({"name": "gemini", "model_name": "gemini-2.0-flash"})
+            provider_configs.append({"name": "gemini", "model_name": DEFAULT_GEMINI_MODEL})
         else:
             provider_configs.append({"name": p})
 

@@ -14,7 +14,7 @@ import json
 from datetime import datetime
 from typing import Dict, List
 
-from providers import get_provider, BaseProvider
+from providers import get_provider, BaseProvider, DEFAULT_OPENAI_MODEL, DEFAULT_GEMINI_MODEL
 from belief_probe_baseline import (
     OPTIONS,
     PROMPT_BASE,
@@ -77,13 +77,14 @@ def run_alignment_preview(
     model_name: str = None,
     n_trials: int = 5,
     constraint: tuple = (5, 80),
+    output_file: str = None,
 ):
     """Run quick preview of alignment regularizer effect."""
 
     # Set default model
     if model_name is None:
-        defaults = {"openai": "gpt-4o-mini", "gemini": "gemini-2.0-flash", "llamacpp": "local"}
-        model_name = defaults.get(provider_name, "gpt-4o-mini")
+        defaults = {"openai": DEFAULT_OPENAI_MODEL, "gemini": DEFAULT_GEMINI_MODEL, "llamacpp": "local"}
+        model_name = defaults.get(provider_name, DEFAULT_OPENAI_MODEL)
 
     print("=" * 70)
     print("ALIGNMENT REGULARIZER: Preview Experiment")
@@ -195,6 +196,26 @@ def run_alignment_preview(
         print("✗ Alignment incentive has no effect")
         print("  → Model may lack introspective access or calibration ability")
 
+    if output_file:
+        output_data = {
+            "config": {
+                "script": str(Path(__file__).resolve()),
+                "provider": provider_name,
+                "model": model_name,
+                "n_trials": n_trials,
+                "constraint": {
+                    "min": constraint[0],
+                    "max": constraint[1],
+                },
+                "timestamp": datetime.now().isoformat(),
+            },
+            "results": results,
+            "summary": summary,
+        }
+        with open(output_file, "w") as f:
+            json.dump(output_data, f, indent=2)
+        print(f"\nResults saved to: {output_file}")
+
     return results, summary
 
 
@@ -208,6 +229,7 @@ if __name__ == "__main__":
     parser.add_argument("-n", "--n-trials", type=int, default=5)
     parser.add_argument("--constraint-min", type=int, default=5)
     parser.add_argument("--constraint-max", type=int, default=80)
+    parser.add_argument("-o", "--output", help="Output JSON file")
 
     args = parser.parse_args()
 
@@ -216,4 +238,5 @@ if __name__ == "__main__":
         model_name=args.model,
         n_trials=args.n_trials,
         constraint=(args.constraint_min, args.constraint_max),
+        output_file=args.output,
     )

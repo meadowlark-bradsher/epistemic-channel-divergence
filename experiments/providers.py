@@ -8,7 +8,7 @@ Supports:
 Usage:
     from providers import get_provider
 
-    model = get_provider("openai", model_name="gpt-4o-mini")
+    model = get_provider("openai", model_name="gpt-4o-mini-2024-07-18")
     probs = model.get_action_probs(prompt)  # Returns exact softmax over A/B/C/D
 """
 
@@ -40,6 +40,8 @@ def _load_dotenv():
 _load_dotenv()
 
 OPTIONS = ["A", "B", "C", "D"]
+DEFAULT_OPENAI_MODEL = "gpt-4o-mini-2024-07-18"
+DEFAULT_GEMINI_MODEL = "gemini-2.0-flash-001"
 
 
 @dataclass
@@ -280,7 +282,7 @@ class OpenAIProvider(BaseProvider):
     provider_name = "openai"
     supports_logprobs = True
 
-    def __init__(self, model_name: str = "gpt-4o-mini", **kwargs):
+    def __init__(self, model_name: str = DEFAULT_OPENAI_MODEL, **kwargs):
         super().__init__(model_name, **kwargs)
         self.api_key = os.environ.get("OPENAI_API_KEY")
         if not self.api_key:
@@ -368,7 +370,7 @@ class GeminiProvider(BaseProvider):
     provider_name = "gemini"
     supports_logprobs = True
 
-    def __init__(self, model_name: str = "gemini-2.0-flash", **kwargs):
+    def __init__(self, model_name: str = DEFAULT_GEMINI_MODEL, **kwargs):
         super().__init__(model_name, **kwargs)
         self.api_key = os.environ.get("GEMINI_API_KEY")
         if not self.api_key:
@@ -585,9 +587,9 @@ if __name__ == "__main__":
         if provider_name == "ollama":
             provider = get_provider("ollama", model_name="llama3.1:latest", n_samples=10)
         elif provider_name == "openai":
-            provider = get_provider("openai", model_name="gpt-4o-mini")
+            provider = get_provider("openai", model_name=DEFAULT_OPENAI_MODEL)
         elif provider_name == "gemini":
-            provider = get_provider("gemini", model_name="gemini-2.0-flash")
+            provider = get_provider("gemini", model_name=DEFAULT_GEMINI_MODEL)
         else:
             provider = get_provider(provider_name)
 

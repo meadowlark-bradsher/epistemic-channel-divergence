@@ -1,6 +1,6 @@
 # Epistemic Channel Divergence
 ![Probing AI Minds: How Different Questions Reveal Hidden Beliefs](images/probing-ai-minds.png)
-This research repository holds a chunk of the code and experimental results originating from my investigation into methods for reliable readings of LLM belief.  
+This repository contains the code and checked-in experimental artifacts for my investigation into methods for reliable readings of LLM belief.  
 research toolkit for measuring the divergence between what LLMs **believe** (behavioral/token-level) and what they **report** (declarative self-reports).
 
 ## The Core Discovery
@@ -54,11 +54,15 @@ These findings are robust across providers, probe orderings, and perturbations:
 # Clone and setup
 git clone https://github.com/meadowlark-bradsher/epistemic-channel-divergence.git
 cd epistemic-channel-divergence
-echo "OPENAI_API_KEY=sk-..." > .env
-echo "GOOGLE_API_KEY=..." >> .env
+pip install -r requirements.txt
+cp .env.example .env
+
+# Edit .env and add any provider keys you plan to use
+# OPENAI_API_KEY=...
+# GEMINI_API_KEY=...
 
 # Core experiment: belief probe with anti-uniform constraint
-python experiments/belief_probe_baseline.py --experiment2 --anti-uniform
+python experiments/belief_probe_baseline.py llama3.1:latest --experiment2 --anti-uniform
 
 # ESI experiment: structural sensitivity
 python experiments/esi_runner.py --providers openai gemini --full

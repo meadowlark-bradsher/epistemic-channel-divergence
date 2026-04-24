@@ -390,6 +390,7 @@ def run_full_experiment(
 
     all_results = []
     summaries = []
+    provider_models = {}
 
     for provider_name in providers:
         print(f"\n{'='*70}")
@@ -399,6 +400,7 @@ def run_full_experiment(
         try:
             provider = get_provider(provider_name)
             print(f"Initialized: {provider.model_name} (logprobs: {provider.supports_logprobs})")
+            provider_models[provider_name] = provider.model_name
         except Exception as e:
             print(f"Failed to initialize {provider_name}: {e}")
             continue
@@ -463,6 +465,24 @@ def run_full_experiment(
                         f"{s.mean_delta_js:.4f},{s.std_delta_js:.4f},"
                         f"{s.uniform_rate_original:.4f},{s.uniform_rate_intervened:.4f}\n")
         print(f"Summary CSV: {summary_path}")
+
+        metadata_path = output_path.with_suffix(".metadata.json")
+        metadata = {
+            "generated_at": datetime.now().isoformat(),
+            "script": str(Path(__file__).resolve()),
+            "questions_file": str(questions_file),
+            "providers": providers,
+            "provider_models": provider_models,
+            "probe_types": probe_types,
+            "intervention_types": intervention_types,
+            "n_variants": n_variants,
+            "max_items": max_items,
+            "seed": seed,
+            "anti_uniform": anti_uniform,
+        }
+        with open(metadata_path, "w") as f:
+            json.dump(metadata, f, indent=2)
+        print(f"Metadata JSON: {metadata_path}")
 
     return all_results, summaries
 

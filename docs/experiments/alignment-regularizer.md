@@ -32,16 +32,20 @@ If models are **capable** of accurate self-reporting but **strategically avoidin
 ## Usage
 
 ```bash
-python experiments/alignment_regularizer.py openai
-python experiments/alignment_regularizer.py gemini --n-trials 20
+python experiments/alignment_regularizer.py -p openai
+python experiments/alignment_regularizer.py -p gemini --n-trials 20
+python experiments/alignment_regularizer.py -p openai -o data/alignment_regularizer_openai.json
 ```
 
 ### Options
 
 | Flag | Description |
 |------|-------------|
-| `--provider NAME` | Provider to test |
-| `--n-trials N` | Trials per incentive level |
+| `-p, --provider NAME` | Provider to test |
+| `-m, --model NAME` | Override the provider's default model |
+| `-n, --n-trials N` | Trials per incentive level |
+| `--constraint-min N` | Minimum allowed report percentage |
+| `--constraint-max N` | Maximum allowed report percentage |
 | `-o FILE` | Output JSON file |
 
 ## Key Results

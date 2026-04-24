@@ -24,6 +24,8 @@ import math
 import re
 import requests
 from dataclasses import dataclass, field
+from datetime import datetime
+from pathlib import Path
 from typing import Dict, Optional, List, Tuple
 import argparse
 
@@ -44,6 +46,8 @@ A) Alpha
 B) Beta
 C) Gamma
 D) Delta"""
+
+DEFAULT_QUESTIONS_FILE = Path(__file__).resolve().parent.parent / "data" / "mc_questions.json"
 
 # -------------------------
 # Math Utilities
@@ -633,7 +637,7 @@ class QuestionResult:
 
 def run_multi_question_experiment(
     model_name: str = "llama3.1:latest",
-    questions_file: str = "../data/mc_questions.json",
+    questions_file: Optional[str] = None,
     n_samples: int = 20,
     temperature: float = 1.0,
     anti_uniform: bool = True,
@@ -653,6 +657,9 @@ def run_multi_question_experiment(
     print(f"Model: {model_name} | Samples: {n_samples} | Anti-uniform: {constraint_status}")
     print(f"Questions: {questions_file}")
     print("=" * 70)
+
+    if questions_file is None:
+        questions_file = str(DEFAULT_QUESTIONS_FILE)
 
     # Load questions
     with open(questions_file) as f:
@@ -786,6 +793,8 @@ def run_multi_question_experiment(
     if output_file:
         output_data = {
             "config": {
+                "generated_at": datetime.now().isoformat(),
+                "script": str(Path(__file__).resolve()),
                 "model": model_name,
                 "n_samples": n_samples,
                 "temperature": temperature,
@@ -838,7 +847,7 @@ if __name__ == "__main__":
                         help="Add constraint forcing non-uniform distribution (5-80%% per option)")
     parser.add_argument("--experiment2", action="store_true",
                         help="Run Experiment 2: multi-question stability test")
-    parser.add_argument("--questions", default="../data/mc_questions.json",
+    parser.add_argument("--questions", default=str(DEFAULT_QUESTIONS_FILE),
                         help="Questions JSON file for Experiment 2")
     parser.add_argument("-o", "--output", help="Output file for detailed results (JSON)")
 
