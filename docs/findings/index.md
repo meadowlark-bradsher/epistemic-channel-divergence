@@ -1,12 +1,14 @@
 # Findings
 
-Authoritative, stable claims from the epistemic channel divergence research. These findings are robust across providers, probe orderings, and perturbations.
+Authoritative findings and working claims from the epistemic channel divergence research.
+Most are backed by committed artifacts; the unconstrained F1 baseline is currently pending
+recommit as a paper-grade raw dataset.
 
 ## Phenomena
 
 | Finding | Page | Summary |
 |---------|------|---------|
-| Uniform Attractor | [uniform-attractor.md](uniform-attractor.md) | Models default to 25/25/25/25 regardless of beliefs |
+| Uniform Attractor | [uniform-attractor.md](uniform-attractor.md) | Historical local runs show collapse toward 25/25/25/25; repo-grade raw artifact pending recommit |
 | Belief-Action Decoupling | [belief-action-decoupling.md](belief-action-decoupling.md) | Models act confidently but report uncertainty |
 | Probe Order Effects | [probe-order-effects.md](probe-order-effects.md) | Report→Act beats CoT→Act; framing is causal |
 | Gravitational Pull | [gravitational-pull.md](gravitational-pull.md) | Constraints displace hedging to boundaries |

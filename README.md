@@ -6,7 +6,7 @@ When you ask a language model "How confident are you?", the answer comes from a 
 
 ## The Core Finding
 
-Models reliably produce uniform probability reports (25/25/25/25) while simultaneously taking confident actions (>90% on a single choice). This isn't confusion - it's a stable attractor in the reporting system that operates largely independently of the decision-making process.
+Models can fall back to uniform probability reports (25/25/25/25) while simultaneously taking confident actions. The constrained and cross-provider artifacts are checked in today; the unconstrained paper-grade baseline is now wired up for regeneration but is not yet committed.
 
 **Implications**: 
 - Self-reported calibration metrics may be measuring report quality, not belief quality
@@ -19,6 +19,7 @@ Models reliably produce uniform probability reports (25/25/25/25) while simultan
 epistemic-channel-divergence/
 ├── experiments/       # Runnable experiment scripts
 ├── interventions/     # Perturbation and debiasing utilities
+├── analysis/          # Notebook + reusable analysis code for paper tables/figures
 ├── data/              # Checked-in question sets and JSON outputs
 ├── results/           # Checked-in JSONL / CSV outputs
 ├── docs/              # Findings, methods, experiment pages, lab notes
@@ -44,6 +45,10 @@ cp .env.example .env
 python experiments/belief_probe_baseline.py llama3.1:latest --experiment2 --anti-uniform \
   -o data/experiment2_results.json
 
+# Unconstrained baseline for auditing the uniform-reporting claim
+python experiments/belief_probe_baseline.py llama3.1:latest --experiment2 \
+  -o data/unconstrained_baseline_results.json
+
 # Cross-provider comparison (true logprobs where available)
 python experiments/compare_providers.py --providers openai gemini --quick \
   -o data/provider_comparison.json
@@ -55,6 +60,13 @@ python experiments/esi_runner.py --providers openai gemini --full \
 # Reproduce the paper pipeline from the checked-in question set
 make paper-pipeline
 
+# Generate the unconstrained F1 baseline artifact without running the full pipeline
+make unconstrained-baseline
+
+# Recompute paper tables/figures from committed artifacts only
+make analysis-summary
+make analysis-notebook-check
+
 # Run a fresh end-to-end pipeline including question generation
 # (requires ANTHROPIC_API_KEY or CLAUDE_API_KEY)
 make fresh-pipeline
@@ -65,8 +77,8 @@ make test
 
 ## Key Findings
 
-**F1**: Models default to uniform reports (~98% of responses) regardless of action confidence  
-**F2**: Mild anti-uniform constraints break the attractor (→ 0-2% uniform reports)  
+**F1**: Historical local runs suggest unconstrained reporting collapses toward uniform reports regardless of action confidence  
+**F2**: Mild anti-uniform constraints break the attractor (low-single-digit uniform rates in the checked-in baseline)  
 **F3**: Divergence is *highest* when models are most confident (Corr(JS, H_action) ≈ -0.5)  
 **F4**: Probe order matters - Report→Act anchors and reduces divergence  
 **F5**: True logprobs essential - sampling-based estimation can invert correlations  
@@ -74,6 +86,10 @@ make test
 **F7**: Introspection acts as a stabilizer across task types  
 
 → [Full findings with evidence and strength ratings](docs/findings/index.md)
+
+The unconstrained raw artifact behind F1 is not yet checked in. Use `make unconstrained-baseline`
+to generate `data/unconstrained_baseline_results.json`; future baseline outputs now record
+parse-health and uniform-rate summaries both with and without parse failures included.
 
 ## For Researchers
 
@@ -106,7 +122,11 @@ make test
 Each experiment targets specific findings and runs in <10 minutes:
 
 ```bash
-# F1 & F2: Uniform reporting + anti-uniform fix
+# F1: Unconstrained baseline for the uniform-reporting claim
+python experiments/belief_probe_baseline.py llama3.1:latest --experiment2 \
+  -o data/unconstrained_baseline_results.json
+
+# F2: Anti-uniform follow-up
 python experiments/belief_probe_baseline.py llama3.1:latest --experiment2 --anti-uniform \
   -o data/experiment2_results.json
 
@@ -127,21 +147,25 @@ python experiments/esi_ensemble.py --providers openai gemini --bootstrap \
   -o results/esi/ensemble_bootstrap.jsonl
 ```
 
-Checked-in artifacts already live in `data/` and `results/esi/`. There is currently no
-`analysis/` notebook directory; post-hoc analysis is script-driven (`experiments/esi_analysis.py`)
-and documented in `docs/labnotes/`.
+Checked-in artifacts already live in `data/` and `results/esi/`. The new analysis layer is split:
+`analysis/figures_and_tables.ipynb` is notebook-only and reads committed local artifacts, while
+the generation layer remains in `experiments/`. The post-hoc ESI script
+(`experiments/esi_analysis.py`) is still available for script-first workflows.
 
 ## Reproducibility
 
 - `requirements.txt` captures the Python dependencies needed to run experiments and build docs.
 - `.env.example` shows the provider variables used by the current scripts.
-- `Makefile` provides `paper-pipeline`, `fresh-pipeline`, and `test` entrypoints.
+- `Makefile` provides `paper-pipeline`, `fresh-pipeline`, `unconstrained-baseline`, and `test` entrypoints.
+- `analysis/figures_and_tables.ipynb` is the reviewer-facing notebook for reproducing tables/figures from committed data only.
+- `make analysis-notebook-check` executes that notebook headlessly via `nbconvert`, which is suitable for CI sanity checks.
 - OpenAI and Gemini defaults are snapshot-pinned in code: `gpt-4o-mini-2024-07-18` and `gemini-2.0-flash-001`.
 - Question sets and several saved experiment outputs are committed under `data/`.
 - [data/README.md](data/README.md) documents the checked-in JSON artifacts and their provenance.
+- Future `belief_probe_baseline.py` JSON outputs now include parse-health summaries, raw report text, and per-probe action/report probabilities for audit.
 - ESI raw outputs and summaries are committed under `results/esi/`.
 - [results/README.md](results/README.md) documents the checked-in ESI/ensemble artifacts.
-- The repo is script-first rather than notebook-first; the executable code lives in `experiments/` and `interventions/`.
+- The repo uses a hybrid model: scripts in `experiments/` generate artifacts, and `analysis/` turns committed artifacts into paper tables and figures.
 
 ## Architecture: The Three-Layer Model
 
@@ -185,10 +209,13 @@ Everything reduces to three layers with two attractors:
 
 ## Status
 
-**Stable** (replicated across providers):
-- F1-F5: Core divergence phenomena
+**Stable / checked-in**:
+- F2-F5: Core divergence phenomena with committed artifacts
 - Anti-uniform constraint effectiveness
 - Logprobs vs sampling distinction
+
+**Pending artifact recommit**:
+- F1 unconstrained baseline for the uniform-reporting claim
 
 **Active Development**:
 - Provider-specific calibration curves
@@ -217,6 +244,7 @@ Everything reduces to three layers with two attractors:
 - **[Findings](docs/findings/index.md)** - Authoritative claims with evidence levels
 - **[Methods](docs/methods/)** - Experimental design and measurement principles  
 - **[Experiments](docs/experiments/index.md)** - Runnable code for each finding
+- **[Analysis](analysis/README.md)** - Notebook and reusable code for paper tables/figures
 - **[Lab Notes](docs/labnotes/)** - Research provenance and key discoveries
 
 ## Contact

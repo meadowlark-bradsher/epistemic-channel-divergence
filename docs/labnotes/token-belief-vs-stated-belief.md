@@ -31,9 +31,10 @@ Absent constraints, models overwhelmingly report uniform distributions (e.g., 25
 
 **Evidence**
 
-* 100% uniform reports across probes (A/B/C/D) without constraint
+* Historical local runs observed 100% uniform reports across probes (A/B/C/D) without constraint
 * Holds across providers and prompt orderings
 * JSON compliance does not break the attractor
+* Repo status: the unconstrained raw artifact is not yet committed. `make unconstrained-baseline` now generates `data/unconstrained_baseline_results.json` with parse-health and raw report fields for audit.
 
 **Method(s)**
 
@@ -56,7 +57,7 @@ Adding a gentle constraint (e.g., min 5%, max 80% unless logically certain) forc
 
 **Evidence**
 
-* Uniform reports drop from ~100% → ~0–2%
+* Uniform reports drop from near-complete collapse in historical unconstrained runs to low single digits in the checked-in constrained baseline
 * No piling at min/max bounds
 * Report entropy drops modestly (≈1.85–1.95), not collapse
 

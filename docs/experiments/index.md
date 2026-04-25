@@ -34,6 +34,9 @@ cp .env.example .env
 # Reproduce the checked-in pipeline
 make paper-pipeline
 
+# Generate the unconstrained baseline artifact for the uniform-reporting claim
+make unconstrained-baseline
+
 # Core experiments
 python experiments/belief_probe_baseline.py llama3.1:latest --experiment2 --anti-uniform
 python experiments/gravitational_pull.py -p openai --multi-question
@@ -49,6 +52,7 @@ python experiments/esi_ensemble.py --providers openai gemini --bootstrap
 Outputs are script-specific rather than fully standardized:
 
 - `belief_probe_baseline.py`, `compare_providers.py`, `gravitational_pull.py`, and `alignment_regularizer.py` write JSON when `-o/--output` is provided.
+- New `belief_probe_baseline.py` outputs include parse-health summaries plus per-probe raw reports and probability vectors for audit.
 - `esi_runner.py` writes per-item JSONL plus a companion summary CSV.
 - `esi_ensemble.py` writes per-item JSONL and optional bootstrap summaries inside each record.
 

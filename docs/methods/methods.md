@@ -69,8 +69,8 @@ To quantify the mismatch between the two belief systems, the following metrics w
 
 A significant methodological challenge was the discovery of a powerful bias in how models report uncertainty.
 
-* **The "Uniform Reporting" Problem**: A key initial finding (F1) was that, when unconstrained, models consistently default to reporting uniform probability distributions (e.g., 25/25/25/25 for a four-option question). This behavior occurs regardless of the actual confidence of their chosen action, rendering naive self-reports uninformative.
-* **The Solution**: To address this, an "anti-uniform constraint" was introduced into the reporting prompt (e.g., specifying that probabilities must be between a minimum of 5% and a maximum of 80%). This mild constraint proved highly effective at breaking the uniform reporting attractor, causing uniform reports to drop from ~100% to ~0–2%. This compels the model to provide more informative, graded uncertainty reports without forcing it to "game" the boundaries.
+* **The "Uniform Reporting" Problem**: Historical local runs suggested that, when unconstrained, models often default to reporting uniform probability distributions (e.g., 25/25/25/25 for a four-option question). This behavior occurs regardless of the actual confidence of their chosen action, rendering naive self-reports uninformative. The paper-grade unconstrained raw artifact is not yet committed, so exact rates should be quoted from `data/unconstrained_baseline_results.json` after regeneration rather than from early notes.
+* **The Solution**: To address this, an "anti-uniform constraint" was introduced into the reporting prompt (e.g., specifying that probabilities must be between a minimum of 5% and a maximum of 80%). This mild constraint is highly effective in the checked-in constrained baseline, where uniform reports fall to low single digits across probes. This compels the model to provide more informative, graded uncertainty reports without forcing it to "game" the boundaries.
 
 These analytical techniques enabled a precise quantification of LLM behavior, leading to several robust and reproducible findings.
 
@@ -78,7 +78,7 @@ These analytical techniques enabled a precise quantification of LLM behavior, le
 
 The application of the methodology described above yielded several robust and reproducible findings regarding LLM behavior. These discoveries highlight the complex and often counter-intuitive relationship between a model's internal state, its actions, and its self-reports. This section summarizes what these methods revealed, linking each discovery back to the techniques used to uncover it.
 
-1. **F1 & F2: The Uniform Reporting Attractor and Its Mitigation** — Models exhibit a stable, learned policy to report uniform probabilities. This is not a sign of incapacity but a default behavior that is reliably broken by a mild anti-uniform constraint, which caused uniform reports to drop from ~100% to ~0–2%. This proves models possess the ability to express graded uncertainty when properly prompted.
+1. **F1 & F2: The Uniform Reporting Attractor and Its Mitigation** — Historical runs indicate that models exhibit a stable, learned policy to report uniform probabilities when unconstrained, while the checked-in constrained baseline shows that a mild anti-uniform constraint breaks this pattern and yields low-single-digit uniform rates. This supports the claim that models possess the ability to express graded uncertainty when properly prompted, while also making the repo's current evidentiary boundary explicit.
 
 2. **F3: Decoupling is Greatest Under High Confidence** — Using true logprobs, analysis reveals a strong negative correlation (≈ −0.5) between belief-action mismatch and action entropy. This means decoupling is highest precisely when the model's action is most confident, a classic sign of a disconnect where models act decisively while simultaneously reporting broad uncertainty.
 

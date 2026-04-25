@@ -26,7 +26,7 @@ import requests
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Optional, List, Tuple
+from typing import Any, Dict, Optional, List, Tuple
 import argparse
 
 # -------------------------
@@ -635,6 +635,122 @@ class QuestionResult:
     probe_results: Dict[str, ProbeResult]
 
 
+def rate(numerator: int, denominator: int) -> float:
+    """Safe rate helper for saved summaries."""
+    return numerator / denominator if denominator else 0.0
+
+
+def serialize_uniformity_pressure(
+    uniformity_pressure: Optional[UniformityPressure],
+) -> Optional[Dict[str, Any]]:
+    """Convert uniformity metrics into a JSON-friendly structure."""
+    if uniformity_pressure is None:
+        return None
+
+    return {
+        "min_enforced": uniformity_pressure.min_enforced,
+        "max_enforced": uniformity_pressure.max_enforced,
+        "binding": uniformity_pressure.binding,
+        "options_at_min": uniformity_pressure.options_at_min,
+        "options_at_max": uniformity_pressure.options_at_max,
+        "avg_distance_to_bounds": uniformity_pressure.avg_distance_to_bounds,
+        "is_boundary_piling": uniformity_pressure.is_boundary_piling,
+        "is_uniform": uniformity_pressure.is_uniform,
+    }
+
+
+def serialize_probe_result(probe_result: ProbeResult) -> Dict[str, Any]:
+    """Serialize a probe result with enough detail for audit and reruns."""
+    return {
+        "name": probe_result.name,
+        "token_probs": probe_result.token_probs,
+        "report_probs": probe_result.report_probs,
+        "token_entropy": probe_result.token_entropy,
+        "report_entropy": probe_result.report_entropy,
+        "kl_token_report": probe_result.kl_token_report,
+        "kl_report_token": probe_result.kl_report_token,
+        "js_divergence": probe_result.js_divergence,
+        "total_variation": probe_result.total_variation,
+        "report_parse_ok": probe_result.report_parse_ok,
+        "report_raw": probe_result.report_raw,
+        "report_sum": probe_result.report_sum,
+        "n_samples": probe_result.n_samples,
+        "uniformity_pressure": serialize_uniformity_pressure(probe_result.uniformity_pressure),
+        "is_uniform": (
+            probe_result.uniformity_pressure.is_uniform
+            if probe_result.uniformity_pressure is not None
+            else None
+        ),
+    }
+
+
+def build_saved_summary(all_results: List[QuestionResult]) -> Dict[str, Any]:
+    """Build parse-health and uniformity summaries for saved artifacts."""
+    by_probe = {}
+    total_reports = 0
+    total_parse_ok = 0
+    total_uniform_all = 0
+    total_uniform_parse_ok = 0
+
+    for probe_name in ["A", "B", "C", "D"]:
+        probe_results = [
+            qr.probe_results[probe_name]
+            for qr in all_results
+            if probe_name in qr.probe_results
+        ]
+        n = len(probe_results)
+        n_parse_ok = sum(1 for pr in probe_results if pr.report_parse_ok)
+        uniform_count_all = sum(
+            1
+            for pr in probe_results
+            if pr.uniformity_pressure and pr.uniformity_pressure.is_uniform
+        )
+        uniform_count_parse_ok = sum(
+            1
+            for pr in probe_results
+            if pr.report_parse_ok
+            and pr.uniformity_pressure
+            and pr.uniformity_pressure.is_uniform
+        )
+        mean_js = sum(pr.js_divergence for pr in probe_results) / max(n, 1)
+
+        by_probe[probe_name] = {
+            "mean_js": mean_js,
+            "n": n,
+            "n_parse_ok": n_parse_ok,
+            "n_parse_failed": n - n_parse_ok,
+            "parse_success_rate": rate(n_parse_ok, n),
+            "uniform_count": uniform_count_all,
+            "uniform_count_all": uniform_count_all,
+            "uniform_rate": rate(uniform_count_all, n),
+            "uniform_rate_all": rate(uniform_count_all, n),
+            "uniform_count_parse_ok_only": uniform_count_parse_ok,
+            "uniform_rate_parse_ok_only": rate(uniform_count_parse_ok, n_parse_ok),
+        }
+
+        total_reports += n
+        total_parse_ok += n_parse_ok
+        total_uniform_all += uniform_count_all
+        total_uniform_parse_ok += uniform_count_parse_ok
+
+    return {
+        "overall": {
+            "n_questions": len(all_results),
+            "n_reports": total_reports,
+            "n_parse_ok": total_parse_ok,
+            "n_parse_failed": total_reports - total_parse_ok,
+            "parse_success_rate": rate(total_parse_ok, total_reports),
+            "uniform_count": total_uniform_all,
+            "uniform_count_all": total_uniform_all,
+            "uniform_rate": rate(total_uniform_all, total_reports),
+            "uniform_rate_all": rate(total_uniform_all, total_reports),
+            "uniform_count_parse_ok_only": total_uniform_parse_ok,
+            "uniform_rate_parse_ok_only": rate(total_uniform_parse_ok, total_parse_ok),
+        },
+        "by_probe": by_probe,
+    }
+
+
 def run_multi_question_experiment(
     model_name: str = "llama3.1:latest",
     questions_file: Optional[str] = None,
@@ -784,10 +900,21 @@ def run_multi_question_experiment(
     print(f"Worst alignment: Probe {worst_probe} (mean JS = {mean_js[worst_probe]:.4f})")
 
     # Check if uniform attractor is broken
-    total_uniform = sum(probe_stats[p]["uniform_count"] for p in "ABCD")
-    total_reports = sum(probe_stats[p]["count"] for p in "ABCD")
-    uniform_rate = 100 * total_uniform / max(total_reports, 1)
-    print(f"Uniform reports: {uniform_rate:.1f}% (attractor {'ACTIVE' if uniform_rate > 50 else 'BROKEN'})")
+    saved_summary = build_saved_summary(all_results)
+    overall_summary = saved_summary["overall"]
+    uniform_rate_all = 100 * overall_summary["uniform_rate_all"]
+    uniform_rate_parse_ok = 100 * overall_summary["uniform_rate_parse_ok_only"]
+    print(
+        f"Parse success: {overall_summary['n_parse_ok']}/{overall_summary['n_reports']} "
+        f"({100 * overall_summary['parse_success_rate']:.1f}%)"
+    )
+    print(
+        f"Uniform reports (all): {uniform_rate_all:.1f}% "
+        f"(attractor {'ACTIVE' if uniform_rate_all > 50 else 'BROKEN'})"
+    )
+    print(
+        f"Uniform reports (parse-ok only): {uniform_rate_parse_ok:.1f}%"
+    )
 
     # Save detailed results if requested
     if output_file:
@@ -800,29 +927,25 @@ def run_multi_question_experiment(
                 "temperature": temperature,
                 "anti_uniform": anti_uniform,
                 "questions_file": questions_file,
-            },
-            "summary": {
-                "by_probe": {
-                    p: {
-                        "mean_js": probe_stats[p]["js_sum"] / max(probe_stats[p]["count"], 1),
-                        "uniform_rate": probe_stats[p]["uniform_count"] / max(probe_stats[p]["count"], 1),
-                        "n": probe_stats[p]["count"],
-                    }
-                    for p in "ABCD"
+                "artifact_role": (
+                    "constrained_baseline" if anti_uniform else "unconstrained_baseline"
+                ),
+                "report_parser": {
+                    "strategy": "json_then_regex",
+                    "json_success_requires_all_options": True,
+                    "regex_success_requires_min_options": 3,
+                    "missing_option_fill": 0.25,
+                    "renormalize_after_fill": True,
                 },
             },
+            "summary": saved_summary,
             "questions": [
                 {
                     "id": qr.question_id,
                     "category": qr.category,
                     "question": qr.question_text,
                     "probes": {
-                        name: {
-                            "js_divergence": pr.js_divergence,
-                            "token_entropy": pr.token_entropy,
-                            "report_entropy": pr.report_entropy,
-                            "is_uniform": pr.uniformity_pressure.is_uniform if pr.uniformity_pressure else None,
-                        }
+                        name: serialize_probe_result(pr)
                         for name, pr in qr.probe_results.items()
                     }
                 }

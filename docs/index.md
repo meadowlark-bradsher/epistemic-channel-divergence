@@ -64,6 +64,9 @@ cp .env.example .env
 # Core experiment: belief probe with anti-uniform constraint
 python experiments/belief_probe_baseline.py llama3.1:latest --experiment2 --anti-uniform
 
+# Audit the unconstrained F1 baseline without running the full paper pipeline
+make unconstrained-baseline
+
 # ESI experiment: structural sensitivity
 python experiments/esi_runner.py --providers openai gemini --full
 

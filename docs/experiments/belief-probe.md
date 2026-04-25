@@ -36,6 +36,10 @@ Different orderings of action and belief elicitation affect alignment. Specifica
 ## Usage
 
 ```bash
+# Unconstrained baseline for the uniform-reporting claim
+python experiments/belief_probe_baseline.py llama3.1:latest --experiment2 \
+  -o data/unconstrained_baseline_results.json
+
 # Local Ollama baseline across all probes
 python experiments/belief_probe_baseline.py llama3.1:latest --anti-uniform -n 50
 
@@ -50,6 +54,10 @@ python experiments/compare_providers.py --providers openai gemini --quick \
 
 `belief_probe_baseline.py` is Ollama-oriented and estimates action probabilities by sampling.
 For OpenAI, Gemini, or llama.cpp runs with true logprobs, use `experiments/compare_providers.py`.
+
+Future JSON outputs from `belief_probe_baseline.py` now include parse-health summaries,
+raw report text, and per-probe action/report probability vectors. That richer schema is
+intended for paper-grade auditing of the unconstrained baseline.
 
 ### Options
 
@@ -85,6 +93,12 @@ For OpenAI, Gemini, or llama.cpp runs with true logprobs, use `experiments/compa
 - F3: Belief-action decoupling
 - F4: Probe order effects (Report→Act anchoring, CoT variance)
 - CoT vs Introspect comparison
+
+## Reproducibility Note
+
+The checked-in Ollama baseline artifact in `data/experiment2_results.json` is the constrained
+run (`--anti-uniform`). The unconstrained paper-grade artifact is not yet committed; generate it
+with the first command above or `make unconstrained-baseline`.
 
 ## Related
 
